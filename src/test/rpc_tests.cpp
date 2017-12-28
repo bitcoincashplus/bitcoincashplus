@@ -377,11 +377,11 @@ BOOST_AUTO_TEST_CASE(json_parse_errors) {
     // Invalid, trailing garbage
     BOOST_CHECK_THROW(ParseNonRFCJSONValue("1.0sds"), std::runtime_error);
     BOOST_CHECK_THROW(ParseNonRFCJSONValue("1.0]"), std::runtime_error);
-    // BCH addresses should fail parsing
+    // BCP addresses should fail parsing
     BOOST_CHECK_THROW(
-        ParseNonRFCJSONValue("175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W"),
+        ParseNonRFCJSONValue("CGUFXy9eQgs3eunVAEqFdS9tnkEcgLw9VD"),
         std::runtime_error);
-    BOOST_CHECK_THROW(ParseNonRFCJSONValue("3J98t1WpEZ73CNmQviecrnyiWrnqRhWNL"),
+    BOOST_CHECK_THROW(ParseNonRFCJSONValue("AQRA16uKrFpxzR17yidYtJDn2t287dc1XY"),
                       std::runtime_error);
 }
 
@@ -488,32 +488,32 @@ BOOST_AUTO_TEST_CASE(rpc_convert_values_generatetoaddress) {
 
     BOOST_CHECK_NO_THROW(result = RPCConvertValues(
                              "generatetoaddress",
-                             {"101", "mkESjLZW66TmHhiFX8MCaBjrhZ543PPh9a"}));
+                             {"101", "CGcHPzEjK58hJWRuzAYyRJeN1AkfCcJQ6w"}));
     BOOST_CHECK_EQUAL(result[0].get_int(), 101);
     BOOST_CHECK_EQUAL(result[1].get_str(),
-                      "mkESjLZW66TmHhiFX8MCaBjrhZ543PPh9a");
+                      "CGcHPzEjK58hJWRuzAYyRJeN1AkfCcJQ6w");
 
     BOOST_CHECK_NO_THROW(result = RPCConvertValues(
                              "generatetoaddress",
-                             {"101", "mhMbmE2tE9xzJYCV9aNC8jKWN31vtGrguU"}));
+                             {"101", "CGpYxqyEah8dGkUAjJmHDawGGCpNDN3XUY"}));
     BOOST_CHECK_EQUAL(result[0].get_int(), 101);
     BOOST_CHECK_EQUAL(result[1].get_str(),
-                      "mhMbmE2tE9xzJYCV9aNC8jKWN31vtGrguU");
+                      "CGpYxqyEah8dGkUAjJmHDawGGCpNDN3XUY");
 
     BOOST_CHECK_NO_THROW(result = RPCConvertValues(
                              "generatetoaddress",
-                             {"1", "mkESjLZW66TmHhiFX8MCaBjrhZ543PPh9a", "9"}));
+                             {"1", "CGcHPzEjK58hJWRuzAYyRJeN1AkfCcJQ6w", "9"}));
     BOOST_CHECK_EQUAL(result[0].get_int(), 1);
     BOOST_CHECK_EQUAL(result[1].get_str(),
-                      "mkESjLZW66TmHhiFX8MCaBjrhZ543PPh9a");
+                      "CGcHPzEjK58hJWRuzAYyRJeN1AkfCcJQ6w");
     BOOST_CHECK_EQUAL(result[2].get_int(), 9);
 
     BOOST_CHECK_NO_THROW(result = RPCConvertValues(
                              "generatetoaddress",
-                             {"1", "mhMbmE2tE9xzJYCV9aNC8jKWN31vtGrguU", "9"}));
+                             {"1", "CGpYxqyEah8dGkUAjJmHDawGGCpNDN3XUY", "9"}));
     BOOST_CHECK_EQUAL(result[0].get_int(), 1);
     BOOST_CHECK_EQUAL(result[1].get_str(),
-                      "mhMbmE2tE9xzJYCV9aNC8jKWN31vtGrguU");
+                      "CGpYxqyEah8dGkUAjJmHDawGGCpNDN3XUY");
     BOOST_CHECK_EQUAL(result[2].get_int(), 9);
 }
 
