@@ -1034,8 +1034,8 @@
         <translation>Izvršavaj u pozadini kao uslužnik i prihvaćaj komande</translation>
     </message>
     <message>
-        <source>Bitcoin ABC</source>
-        <translation>Bitcoin ABC</translation>
+        <source>Bitcoin Cash Plus</source>
+        <translation>Bitcoin Cash Plus</translation>
     </message>
     <message>
         <source>Block creation options:</source>

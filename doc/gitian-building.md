@@ -22,7 +22,7 @@ Table of Contents
 
 - [Preparing the Gitian builder host](#preparing-the-gitian-builder-host)
 - [Setting up the Gitian image](#setting-up-the-gitian-image)
-- [Building Bitcoin ABC](#building-bitcoin-abc)
+- [Building Bitcoin Cash Plus](#building-bitcoin-abc)
 
 
 Preparing the Gitian builder host
@@ -94,10 +94,10 @@ bin/make-base-vm --lxc --arch amd64 --suite xenial
 There will be a lot of warnings printed during the build of the image. These
 can be ignored.
 
-Building Bitcoin ABC
+Building Bitcoin Cash Plus
 --------------------
 
-To build Bitcoin ABC (for Linux, OS X and Windows) run the following commands:
+To build Bitcoin Cash Plus (for Linux, OS X and Windows) run the following commands:
 
 ```bash
 URL=https://github.com/bitcoin-abc/bitcoin-abc.git

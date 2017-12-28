@@ -29,10 +29,10 @@ In case you want to build the disk image with `make deploy` (.dmg / optional), y
 
     brew install librsvg
 
-Build Bitcoin ABC
+Build Bitcoin Cash Plus
 -----------------
 
-1. Clone the Bitcoin ABC source code and cd into `bitcoin-abc`
+1. Clone the Bitcoin Cash Plus source code and cd into `bitcoin-abc`
 
         git clone github.com/bitcoincashplus/bitcoincashplus
         cd bitcoin-abc
@@ -58,7 +58,7 @@ Build Bitcoin ABC
 Running
 -------
 
-Bitcoin ABC is now available at `./src/bitcoind`
+Bitcoin Cash Plus is now available at `./src/bitcoind`
 
 Before running, it's recommended you create an RPC configuration file.
 

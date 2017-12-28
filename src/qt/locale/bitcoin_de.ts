@@ -3054,8 +3054,8 @@
         <translation>Kann HTTP Server nicht starten. Siehe debug log für Details.</translation>
     </message>
     <message>
-        <source>Bitcoin ABC</source>
-        <translation>Bitcoin ABC</translation>
+        <source>Bitcoin Cash Plus</source>
+        <translation>Bitcoin Cash Plus</translation>
     </message>
     <message>
         <source>The %s developers</source>

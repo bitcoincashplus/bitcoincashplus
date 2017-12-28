@@ -708,7 +708,7 @@
 <context>
     <name>bitcoin-abc</name>
     <message>
-        <source>Bitcoin ABC</source>
+        <source>Bitcoin Cash Plus</source>
         <translation>Bitcoin மையம்</translation>
     </message>
     <message>

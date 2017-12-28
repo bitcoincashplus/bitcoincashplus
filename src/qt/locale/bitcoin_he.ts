@@ -1648,7 +1648,7 @@
         <translation>ריצה כסוכן ברקע וקבלת פקודות</translation>
     </message>
     <message>
-        <source>Bitcoin ABC</source>
+        <source>Bitcoin Cash Plus</source>
         <translation>ליבת ביטקוין</translation>
     </message>
     <message>

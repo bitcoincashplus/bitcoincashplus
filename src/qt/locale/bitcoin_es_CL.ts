@@ -772,8 +772,8 @@
 </translation>
     </message>
     <message>
-        <source>Bitcoin ABC</source>
-        <translation>bitcoin abc</translation>
+        <source>Bitcoin Cash Plus</source>
+        <translation>bitcoin cashplus</translation>
     </message>
     <message>
         <source>Error loading block database</source>

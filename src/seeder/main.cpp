@@ -441,10 +441,10 @@ extern "C" void *ThreadStats(void *) {
 }
 
 static const std::string mainnet_seeds[] = {
-    "seed.bitcoinabc.org", "seed-abc.bitcoinforks.org", "seed.bitprim.org",
+    "seed.bitcoincashplus.org", "seed-abc.bitcoinforks.org", "seed.bitprim.org",
     "seed.deadalnix.me",   "seeder.criptolayer.net",    ""};
 static const std::string testnet_seeds[] = {
-    "testnet-seed.bitcoinabc.org",    "testnet-seed-abc.bitcoinforks.org",
+    "testnet-seed.bitcoincashplus.org",    "testnet-seed-abc.bitcoinforks.org",
     "testnet-seed.bitprim.org",       "testnet-seed.deadalnix.me",
     "testnet-seeder.criptolayer.net", ""};
 static const std::string *seeds = mainnet_seeds;

@@ -1,11 +1,11 @@
-Bitcoin ABC
+Bitcoin Cash Plus
 =====================
 
 Setup
 ---------------------
-Bitcoin ABC is a fork of Bitcoin Core, which is the original Bitcoin client and builds the backbone of the network. It downloads and stores the entire history of Bitcoin transactions (which is currently several GBs); depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more.
+Bitcoin Cash Plus is a fork of Bitcoin Core, which is the original Bitcoin client and builds the backbone of the network. It downloads and stores the entire history of Bitcoin transactions (which is currently several GBs); depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more.
 
-To download Bitcoin ABC, visit [bitcoincashplus.org](https://download.bitcoincashplus.org/).
+To download Bitcoin Cash Plus, visit [bitcoincashplus.org](https://download.bitcoincashplus.org/).
 
 Running
 ---------------------
@@ -43,7 +43,7 @@ The following are developer notes on how to build Bitcoin on your native platfor
 
 Development
 ---------------------
-The Bitcoin ABC repo's [root README](/README.md) contains relevant information on the development process and automated testing.
+The Bitcoin Cash Plus repo's [root README](/README.md) contains relevant information on the development process and automated testing.
 
 - [Developer Notes](developer-notes.md)
 - [Release Notes](release-notes.md)

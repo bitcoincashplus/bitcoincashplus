@@ -816,11 +816,11 @@ std::string CopyrightHolders(const std::string &strPrefix) {
         strPrefix +
         strprintf(_(COPYRIGHT_HOLDERS), _(COPYRIGHT_HOLDERS_SUBSTITUTION));
 
-    // Check for untranslated substitution to make sure Bitcoin ABC copyright
+    // Check for untranslated substitution to make sure Bitcoin Cash Plus copyright
     // is not removed by accident.
     if (strprintf(COPYRIGHT_HOLDERS, COPYRIGHT_HOLDERS_SUBSTITUTION)
-            .find("Bitcoin ABC") == std::string::npos) {
-        strCopyrightHolders += "\n" + strPrefix + "The Bitcoin ABC developers";
+            .find("Bitcoin Cash Plus") == std::string::npos) {
+        strCopyrightHolders += "\n" + strPrefix + "The Bitcoin Cash Plus developers";
     }
     return strCopyrightHolders;
 }

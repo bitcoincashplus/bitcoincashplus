@@ -1,4 +1,4 @@
-Bitcoin ABC Release Process
+Bitcoin Cash Plus Release Process
 ===========================
 
 
@@ -59,5 +59,5 @@ Bitcoin ABC Release Process
 13. Announce Release:
     - [Reddit](https://www.reddit.com/r/BitcoinCashPlus/)
     - Twitter @Bitcoin_ABC
-    - Public slack channels friendly to Bitcoin ABC announcements 
+    - Public slack channels friendly to Bitcoin Cash Plus announcements 
       (eg. #abc-announce on BTCforks,  #hardfork on BTCchat)

@@ -1,7 +1,7 @@
-Bitcoin ABC UAHF-relevant DNS seed information
+Bitcoin Cash Plus UAHF-relevant DNS seed information
 ==============================================
 
-Bitcoin ABC uses special seeds under the control of the
+Bitcoin Cash Plus uses special seeds under the control of the
 UAHF supporting operators, to increase the chance of a smooth
 separation of the UAHF network from the non-UAHF-supporting
 parts of the network.
