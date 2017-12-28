@@ -22,6 +22,13 @@
 #include <assert.h>
 #include <boost/assign/list_of.hpp>
 
+// For equihash_parameters_acceptable.
+#include "crypto/equihash.h"
+#include "net.h"
+#include "validation.h"
+#define equihash_parameters_acceptable(N, K) \
+    ((CBlockHeader::HEADER_SIZE + equihash_solution_size(N, K))*MAX_HEADERS_RESULTS < \
+     MAX_PROTOCOL_MESSAGE_LENGTH-1000)
 
 // Far into the future.
 static const std::string ANTI_REPLAY_COMMITMENT =
@@ -154,6 +161,11 @@ public:
         nDefaultPort = 8337; // different port than Bitcoin
         nPruneAfterHeight = 100000;
 
+        const size_t N = 200, K = 9;
+        BOOST_STATIC_ASSERT(equihash_parameters_acceptable(N, K));
+        nEquihashN = N;
+        nEquihashK = K;
+
 
         genesis = CreateGenesisBlock(1231006505, 2083236893, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -273,6 +285,12 @@ public:
         nDefaultPort = 18333;
         nPruneAfterHeight = 1000;
 
+        const size_t N = 200, K = 9;
+        BOOST_STATIC_ASSERT(equihash_parameters_acceptable(N, K));
+        nEquihashN = N;
+        nEquihashK = K;
+
+
         genesis = CreateGenesisBlock(1296688602, 414098458, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
         assert(consensus.hashGenesisBlock == uint256S("0x000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943"));
@@ -370,6 +388,12 @@ public:
 
         nDefaultPort = 18444;
         nPruneAfterHeight = 1000;
+
+        const size_t N = 48, K = 5;
+        BOOST_STATIC_ASSERT(equihash_parameters_acceptable(N, K));
+        nEquihashN = N;
+        nEquihashK = K;
+
 
         genesis = CreateGenesisBlock(1296688602, 2, 0x207fffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
