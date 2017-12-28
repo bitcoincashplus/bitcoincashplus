@@ -13,17 +13,17 @@ BitcoinUnits::BitcoinUnits(QObject *parent)
 
 QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits() {
     QList<BitcoinUnits::Unit> unitlist;
-    unitlist.append(BCH);
-    unitlist.append(mBCH);
-    unitlist.append(uBCH);
+    unitlist.append(BCP);
+    unitlist.append(mBCP);
+    unitlist.append(uBCP);
     return unitlist;
 }
 
 bool BitcoinUnits::valid(int unit) {
     switch (unit) {
-        case BCH:
-        case mBCH:
-        case uBCH:
+        case BCP:
+        case mBCP:
+        case uBCP:
             return true;
         default:
             return false;
@@ -32,12 +32,12 @@ bool BitcoinUnits::valid(int unit) {
 
 QString BitcoinUnits::name(int unit) {
     switch (unit) {
-        case BCH:
-            return QString("BCH");
-        case mBCH:
-            return QString("mBCH");
-        case uBCH:
-            return QString::fromUtf8("μBCH");
+        case BCP:
+            return QString("BCP");
+        case mBCP:
+            return QString("mBCP");
+        case uBCP:
+            return QString::fromUtf8("μBCP");
         default:
             return QString("???");
     }
@@ -45,11 +45,11 @@ QString BitcoinUnits::name(int unit) {
 
 QString BitcoinUnits::description(int unit) {
     switch (unit) {
-        case BCH:
+        case BCP:
             return QString("Bitcoins");
-        case mBCH:
+        case mBCP:
             return QString("Milli-Bitcoins (1 / 1" THIN_SP_UTF8 "000)");
-        case uBCH:
+        case uBCP:
             return QString("Micro-Bitcoins (1 / 1" THIN_SP_UTF8
                            "000" THIN_SP_UTF8 "000)");
         default:
@@ -59,11 +59,11 @@ QString BitcoinUnits::description(int unit) {
 
 qint64 BitcoinUnits::factor(int unit) {
     switch (unit) {
-        case BCH:
+        case BCP:
             return 100000000;
-        case mBCH:
+        case mBCP:
             return 100000;
-        case uBCH:
+        case uBCP:
             return 100;
         default:
             return 100000000;
@@ -72,11 +72,11 @@ qint64 BitcoinUnits::factor(int unit) {
 
 int BitcoinUnits::decimals(int unit) {
     switch (unit) {
-        case BCH:
+        case BCP:
             return 8;
-        case mBCH:
+        case mBCP:
             return 5;
-        case uBCH:
+        case uBCP:
             return 2;
         default:
             return 0;

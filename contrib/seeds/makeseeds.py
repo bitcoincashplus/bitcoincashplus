@@ -34,7 +34,7 @@ PATTERN_ONION = re.compile(
     r"^([abcdefghijklmnopqrstuvwxyz234567]{16}\.onion):(\d+)$")
 
 # Used to only select nodes with a user agent string compatible with the
-# BCH/UAHF specification.
+# BCP
 PATTERN_AGENT = re.compile(
     r"^(/BitcoinCashPlus:0.16.(\d+)\(\S+\)/")
 
@@ -43,7 +43,7 @@ def parseline(line):
     sline = line.split()
     if len(sline) < 11:
         return None
-    # All BCH clients apart BU and Classic has a space in the useragent string
+    # All BCP clients apart BU and Classic has a space in the useragent string
     if len(sline) == 13:
         sline[11] = sline[11] + sline[12]
     if len(sline) == 14:
@@ -178,9 +178,9 @@ def main():
     # Filter out hosts with multiple bitcoin ports, these are likely abusive
     ips = filtermultiport(ips)
     # Look up ASNs and limit results, both per ASN and globally.
-    # TODO during this bootstrap phase we need any BCH full nodes
+    # TODO during this bootstrap phase we need any BCP full nodes
     # active on the network, uncomment the following line once the
-    # BCH chain will be consolidated.
+    # BCP chain will be consolidated.
     # ips = filterbyasn(ips, MAX_SEEDS_PER_ASN, NSEEDS)
     # Sort the results by IP address (for deterministic output).
     ips.sort(key=lambda x: (x['net'], x['sortkey']))
