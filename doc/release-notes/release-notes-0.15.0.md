@@ -1,4 +1,4 @@
-Bitcoin ABC version 0.15.0 is now available from:
+Bitcoin Cash Plus version 0.15.0 is now available from:
 
   <https://download.bitcoinabc.org/0.15.0/>
 
@@ -16,7 +16,7 @@ This release includes the following features and fixes:
 - Fix RPC signrawtransaction silently accepting missing amount field (D449)
 - Fix a some small memory leaks, and an overflow (D372, D452, D472)
 - Added sanitizer support (D474, D481)
-- Rename package to bitcoin-abc-* (D482, D489, D510, D513)
+- Rename package to bitcoincashplus-* (D482, D489, D510, D513)
 - Cryptographic randomness improvements (backport from Core PR9821 and PR9792) (D488, D490)
 - Store the UTXO set on a per output basis rather than a per transaction basis (backport from Core)
 - Various other backports and fixes from Core

@@ -53,7 +53,7 @@ Possible options, which apply to each individual test run:
   --nocleanup           Leave bitcoinds and test.* datadir on exit or error
   --noshutdown          Don't stop bitcoinds after the test execution
   --srcdir=SRCDIR       Source directory containing bitcoind/bitcoin-cli
-                        (default: /Users/shammah/repos/bitcoin-abc/src)
+                        (default: /Users/shammah/repos/bitcoincashplus/src)
   --cachedir=CACHEDIR   Directory for caching pregenerated datadirs
   --tmpdir=TMPDIR       Root directory for datadirs
   -l LOGLEVEL, --loglevel=LOGLEVEL

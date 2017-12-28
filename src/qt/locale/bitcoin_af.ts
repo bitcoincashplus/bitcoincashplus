@@ -906,7 +906,7 @@
     </message>
     </context>
 <context>
-    <name>bitcoin-abc</name>
+    <name>bitcoincashplus</name>
     <message>
         <source>Bitcoin Cash Plus</source>
         <translation>Bitcoin Cash Plus</translation>

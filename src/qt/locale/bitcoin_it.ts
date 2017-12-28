@@ -2525,7 +2525,7 @@ Per specificare più URL separarli con una barra verticale "|".</translation>
     </message>
 </context>
 <context>
-    <name>bitcoin-abc</name>
+    <name>bitcoincashplus</name>
     <message>
         <source>Options:</source>
         <translation>Opzioni:</translation>

@@ -96,7 +96,7 @@ static void InitMessage(const std::string &message) {
  * Translate string to current locale using Qt.
  */
 static std::string Translate(const char *psz) {
-    return QCoreApplication::translate("bitcoin-abc", psz).toStdString();
+    return QCoreApplication::translate("bitcoincashplus", psz).toStdString();
 }
 
 static QString GetLangTerritory() {
@@ -573,7 +573,7 @@ static void MigrateSettings() {
 #endif
     const QStringList legacyKeys(legacy.allKeys());
 
-    // We only migrate settings if we have Core settings but no Bitcoin-ABC
+    // We only migrate settings if we have Core settings but no bitcoincashplus
     // settings
     if (!legacyKeys.isEmpty() && abc.allKeys().isEmpty()) {
         for (const QString &key : legacyKeys) {

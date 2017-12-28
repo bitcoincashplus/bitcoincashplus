@@ -32,12 +32,12 @@ In case you want to build the disk image with `make deploy` (.dmg / optional), y
 Build Bitcoin Cash Plus
 -----------------
 
-1. Clone the Bitcoin Cash Plus source code and cd into `bitcoin-abc`
+1. Clone the Bitcoin Cash Plus source code and cd into `bitcoincashplus`
 
         git clone github.com/bitcoincashplus/bitcoincashplus
-        cd bitcoin-abc
+        cd bitcoincashplus
 
-2.  Build bitcoin-abc:
+2.  Build bitcoincashplus:
 
     Configure and build the headless bitcoin binaries as well as the GUI (if Qt is found).
 

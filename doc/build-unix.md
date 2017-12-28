@@ -281,7 +281,7 @@ This example lists the steps necessary to setup and build a command line only, n
 
     pacman -S git base-devel boost libevent python
     git clone https://github.com/bitcoincashplus/bitcoincashplus
-    cd bitcoin-abc/
+    cd bitcoincashplus/
     ./autogen.sh
     ./configure --disable-wallet --without-gui --without-miniupnpc
     make check

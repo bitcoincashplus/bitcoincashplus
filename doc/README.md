@@ -24,7 +24,7 @@ Unpack the files into a directory, and then run bitcoin-qt.exe.
 
 ### OS X
 
-Drag bitcoin-abc to your applications folder, and then run bitcoin-abc.
+Drag bitcoincashplus to your applications folder, and then run bitcoincashplus.
 
 ### Need Help?
 

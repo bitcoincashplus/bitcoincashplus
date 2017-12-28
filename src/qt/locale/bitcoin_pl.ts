@@ -2429,7 +2429,7 @@ Zwróć uwagę, że poprawnie zweryfikowana wiadomość potwierdza to, że nadaw
     <name>WalletView</name>
     </context>
 <context>
-    <name>bitcoin-abc</name>
+    <name>bitcoincashplus</name>
     <message>
         <source>Options:</source>
         <translation>Opcje:</translation>

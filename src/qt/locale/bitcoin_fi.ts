@@ -1720,7 +1720,7 @@
     </message>
     </context>
 <context>
-    <name>bitcoin-abc</name>
+    <name>bitcoincashplus</name>
     <message>
         <source>Options:</source>
         <translation>Asetukset:</translation>
@@ -1779,7 +1779,7 @@
     </message>
     <message>
         <source>Bitcoin Cash Plus</source>
-        <translation>Bitcoin-abc</translation>
+        <translation>bitcoincashplus</translation>
     </message>
     <message>
         <source>The %s developers</source>

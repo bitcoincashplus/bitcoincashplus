@@ -2524,7 +2524,7 @@
     </message>
 </context>
 <context>
-    <name>bitcoin-abc</name>
+    <name>bitcoincashplus</name>
     <message>
         <source>Options:</source>
         <translation>Opcions:</translation>

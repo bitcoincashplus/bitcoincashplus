@@ -7,7 +7,7 @@ include(CheckIncludeFiles)
 include(CheckSymbolExists)
 
 # Package informations
-set(PACKAGE_NAME "Bitcoin ABC")
+set(PACKAGE_NAME "Bitcoin Cash Plus")
 
 # Version
 set(CLIENT_VERSION_MAJOR 0)

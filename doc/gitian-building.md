@@ -22,7 +22,7 @@ Table of Contents
 
 - [Preparing the Gitian builder host](#preparing-the-gitian-builder-host)
 - [Setting up the Gitian image](#setting-up-the-gitian-image)
-- [Building Bitcoin Cash Plus](#building-bitcoin-abc)
+- [Building Bitcoin Cash Plus](#building-bitcoincashplus)
 
 
 Preparing the Gitian builder host
@@ -100,7 +100,7 @@ Building Bitcoin Cash Plus
 To build Bitcoin Cash Plus (for Linux, OS X and Windows) run the following commands:
 
 ```bash
-URL=https://github.com/bitcoin-abc/bitcoin-abc.git
+URL=https://github.com/bitcoincashplus/bitcoincashplus.git
 COMMIT=v0.16.0 # or whatever release tag you wish
 
 # Note the path to descriptors assumes vagrant was used.  These files are within the ABC repository normally.

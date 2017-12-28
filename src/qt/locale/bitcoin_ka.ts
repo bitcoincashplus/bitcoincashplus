@@ -1146,7 +1146,7 @@
     <name>WalletView</name>
     </context>
 <context>
-    <name>bitcoin-abc</name>
+    <name>bitcoincashplus</name>
     <message>
         <source>Options:</source>
         <translation>ოპციები:</translation>
