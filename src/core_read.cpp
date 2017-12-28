@@ -106,13 +106,14 @@ bool DecodeHexTx(CMutableTransaction &tx, const std::string &strHexTx) {
     return true;
 }
 
-bool DecodeHexBlk(CBlock &block, const std::string &strHexBlk) {
+bool DecodeHexBlk(CBlock &block, const std::string &strHexBlk,bool fLegacyFormat) {
     if (!IsHex(strHexBlk)) {
         return false;
     }
 
     std::vector<uint8_t> blockData(ParseHex(strHexBlk));
-    CDataStream ssBlock(blockData, SER_NETWORK, PROTOCOL_VERSION);
+    int serFlags = fLegacyFormat ? SERIALIZE_BLOCK_LEGACY : 0;
+    CDataStream ssBlock(blockData, SER_NETWORK, PROTOCOL_VERSION|serFlags);
     try {
         ssBlock >> block;
     } catch (const std::exception &) {

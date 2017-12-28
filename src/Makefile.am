@@ -343,6 +343,7 @@ libbitcoin_common_a_SOURCES = \
   netaddress.cpp \
   netbase.cpp \
   protocol.cpp \
+  primitives/block.cpp \
   scheduler.cpp \
   script/sign.cpp \
   script/standard.cpp \

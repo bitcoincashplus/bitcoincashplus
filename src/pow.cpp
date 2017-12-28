@@ -13,8 +13,10 @@
 #include "consensus/params.h"
 #include "primitives/block.h"
 #include "uint256.h"
+#include "streams.h"
 #include "util.h"
 #include "validation.h"
+#include "crypto/equihash.h"
 
 /**
  * Compute the next required proof of work using the legacy Bitcoin difficulty
@@ -144,7 +146,12 @@ uint32_t CalculateNextWorkRequired(const CBlockIndex *pindexPrev,
     return bnNew.GetCompact();
 }
 
-bool CheckProofOfWork(uint256 hash, uint32_t nBits, const Config &config) {
+
+/**
+ * Check whether a block hash satisfies the proof-of-work requirement specified
+ * by nBits
+ */
+bool CheckProofOfWork(uint256 hash, uint32_t nBits, const Consensus::Params& params){
     bool fNegative;
     bool fOverflow;
     arith_uint256 bnTarget;
@@ -154,7 +161,7 @@ bool CheckProofOfWork(uint256 hash, uint32_t nBits, const Config &config) {
     // Check range
     if (fNegative || bnTarget == 0 || fOverflow ||
         bnTarget >
-            UintToArith256(config.GetChainParams().GetConsensus().powLimit)) {
+            UintToArith256(params.powLimit)) {
         return false;
     }
 
@@ -164,6 +171,12 @@ bool CheckProofOfWork(uint256 hash, uint32_t nBits, const Config &config) {
     }
 
     return true;
+
+}
+
+bool CheckProofOfWork(uint256 hash, uint32_t nBits, const Config &config) {
+
+  return CheckProofOfWork(hash,nBits,config.GetChainParams().GetConsensus());
 }
 
 /**
@@ -287,4 +300,32 @@ uint32_t GetNextCashWorkRequired(const CBlockIndex *pindexPrev,
     }
 
     return nextTarget.GetCompact();
+}
+
+
+bool CheckEquihashSolution(const CBlockHeader *pblock, const Config &config)
+{
+    unsigned int n = config.GetChainParams().EquihashN();
+    unsigned int k = config.GetChainParams().EquihashK();
+
+    // Hash state
+    crypto_generichash_blake2b_state state;
+    EhInitialiseState(n, k, state);
+
+    // I = the block header minus nonce and solution.
+    CEquihashInput I{*pblock};
+    // I||V
+    CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+    ss << I;
+    ss << pblock->nNonce;
+
+    // H(I||V||...
+    crypto_generichash_blake2b_update(&state, (unsigned char*)&ss[0], ss.size());
+
+    bool isValid;
+    EhIsValidSolution(n, k, state, pblock->nSolution, isValid);
+    if (!isValid)
+        return error("CheckEquihashSolution(): invalid solution");
+
+    return true;
 }

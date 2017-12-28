@@ -3,6 +3,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+
 #include "amount.h"
 #include "chain.h"
 #include "chainparams.h"
@@ -24,6 +25,8 @@
 #include "utilstrencodings.h"
 #include "validation.h"
 #include "validationinterface.h"
+#include "crypto/equihash.h"
+
 
 #include <univalue.h>
 
@@ -113,21 +116,25 @@ static UniValue generateBlocks(const Config &config,
                                std::shared_ptr<CReserveScript> coinbaseScript,
                                int nGenerate, uint64_t nMaxTries,
                                bool keepScript) {
-    static const int nInnerLoopCount = 0x100000;
-    int nHeightStart = 0;
+
+    static const int nInnerLoopCount = 0x10000;
+    static const int nInnerLoopEquihashMask = 0xFFFF;
+    static const int nInnerLoopEquihashCount = 0xFFFF;
     int nHeightEnd = 0;
     int nHeight = 0;
 
-    {
-        // Don't keep cs_main locked.
+    {   // Don't keep cs_main locked
         LOCK(cs_main);
-        nHeightStart = chainActive.Height();
-        nHeight = nHeightStart;
-        nHeightEnd = nHeightStart + nGenerate;
+        nHeight = chainActive.Height();
+        nHeightEnd = nHeight+nGenerate;
     }
 
+    const CChainParams& params = Params();
+    unsigned int n = params.EquihashN();
+    unsigned int k = params.EquihashK();
     unsigned int nExtraNonce = 0;
     UniValue blockHashes(UniValue::VARR);
+
     while (nHeight < nHeightEnd) {
         std::unique_ptr<CBlockTemplate> pblocktemplate(
             BlockAssembler(config, Params())
@@ -144,17 +151,58 @@ static UniValue generateBlocks(const Config &config,
             IncrementExtraNonce(config, pblock, chainActive.Tip(), nExtraNonce);
         }
 
-        while (nMaxTries > 0 && pblock->nNonce < nInnerLoopCount &&
-               !CheckProofOfWork(pblock->GetHash(), pblock->nBits, config)) {
-            ++pblock->nNonce;
-            --nMaxTries;
-        }
+         if (pblock->nHeight < (uint32_t)params.GetConsensus().BCPHeight) {
+             // Solve sha256d.
+             while (nMaxTries > 0 && (int)pblock->nNonce.GetUint64(0) < nInnerLoopCount &&
+                    !CheckProofOfWork(pblock->GetHash(), pblock->nBits, config)) {
+                 pblock->nNonce = ArithToUint256(UintToArith256(pblock->nNonce) + 1);
+                 --nMaxTries;
+             }
+         } else {
+             // Solve Equihash.
+             crypto_generichash_blake2b_state eh_state;
+             EhInitialiseState(n, k, eh_state);
+
+             // I = the block header minus nonce and solution.
+             CEquihashInput I{*pblock};
+             CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+             ss << I;
+
+             // H(I||...
+             crypto_generichash_blake2b_update(&eh_state, (unsigned char*)&ss[0], ss.size());
+
+             while (nMaxTries > 0 &&
+                    ((int)pblock->nNonce.GetUint64(0) & nInnerLoopEquihashMask) < nInnerLoopEquihashCount) {
+                 // Yes, there is a chance every nonce could fail to satisfy the -regtest
+                 // target -- 1 in 2^(2^256). That ain't gonna happen
+                 pblock->nNonce = ArithToUint256(UintToArith256(pblock->nNonce) + 1);
+
+                 // H(I||V||...
+                 crypto_generichash_blake2b_state curr_state;
+                 curr_state = eh_state;
+                 crypto_generichash_blake2b_update(&curr_state,
+                                                   pblock->nNonce.begin(),
+                                                   pblock->nNonce.size());
+
+                 // (x_1, x_2, ...) = A(I, V, n, k)
+                 std::function<bool(std::vector<unsigned char>)> validBlock =
+                         [&pblock](std::vector<unsigned char> soln) {
+                     pblock->nSolution = soln;
+                     return CheckProofOfWork(pblock->GetHash(), pblock->nBits, Params().GetConsensus());
+                 };
+                 bool found = EhBasicSolveUncancellable(n, k, curr_state, validBlock);
+                 --nMaxTries;
+                 if (found) {
+                     break;
+                 }
+             }
+         }
 
         if (nMaxTries == 0) {
             break;
         }
 
-        if (pblock->nNonce == nInnerLoopCount) {
+        if ((int)pblock->nNonce.GetUint64(0) == nInnerLoopCount) {
             continue;
         }
 
@@ -402,7 +450,7 @@ static UniValue getblocktemplate(const Config &config,
             "in the following spec\n"
             "     {\n"
             "       \"mode\":\"template\"    (string, optional) This must be "
-            "set to \"template\", \"proposal\" (see BIP 23), or omitted\n"
+            "set to \"template\", \"proposal\" (see BIP 23), \"proposal_legacy\", or omitted\n"
             "       \"capabilities\":[     (array, optional) A list of "
             "strings\n"
             "           \"support\"          (string) client side supported "
@@ -526,7 +574,8 @@ static UniValue getblocktemplate(const Config &config,
         }
         lpval = find_value(oparam, "longpollid");
 
-        if (strMode == "proposal") {
+
+        if (strMode == "proposal"  || strMode == "proposal_legacy") {
             const UniValue &dataval = find_value(oparam, "data");
             if (!dataval.isStr()) {
                 throw JSONRPCError(RPC_TYPE_ERROR,
@@ -534,7 +583,8 @@ static UniValue getblocktemplate(const Config &config,
             }
 
             CBlock block;
-            if (!DecodeHexBlk(block, dataval.get_str())) {
+            bool legacy_format = (strMode == "proposal_legacy");
+            if (!DecodeHexBlk(block, dataval.get_str(),legacy_format)) {
                 throw JSONRPCError(RPC_DESERIALIZATION_ERROR,
                                    "Block decode failed");
             }
@@ -556,6 +606,13 @@ static UniValue getblocktemplate(const Config &config,
             // TestBlockValidity only supports blocks built on the current Tip
             if (block.hashPrevBlock != pindexPrev->GetBlockHash()) {
                 return "inconclusive-not-best-prevblk";
+
+            }
+            if (!legacy_format && block.nHeight != (uint32_t)pindexPrev->nHeight + 1){
+                return "inconclusive-bad-height";
+            }
+            if (block.nHeight != (uint32_t)pindexPrev->nHeight + 1){
+                return "inconclusive-bad-height";
             }
             CValidationState state;
             TestBlockValidity(config, state, block, pindexPrev, false, true);
@@ -683,7 +740,8 @@ static UniValue getblocktemplate(const Config &config,
 
     // Update nTime
     UpdateTime(pblock, config, pindexPrev);
-    pblock->nNonce = 0;
+    pblock->nNonce = uint256();
+    pblock->nSolution.clear();
 
     UniValue aCaps(UniValue::VARR);
     aCaps.push_back("proposal");
@@ -855,9 +913,9 @@ protected:
 static UniValue submitblock(const Config &config,
                             const JSONRPCRequest &request) {
     if (request.fHelp || request.params.size() < 1 ||
-        request.params.size() > 2) {
+        request.params.size() > 3) {
         throw std::runtime_error(
-            "submitblock \"hexdata\" ( \"jsonparametersobject\" )\n"
+            "submitblock \"hexdata\" ( \"jsonparametersobject\"  \"legacy\" )\n"
             "\nAttempts to submit new block to network.\n"
             "The 'jsonparametersobject' parameter is currently ignored.\n"
             "See https://en.bitcoin.it/wiki/BIP_0022 for full specification.\n"
@@ -871,6 +929,7 @@ static UniValue submitblock(const Config &config,
             "      \"workid\" : \"id\"    (string, optional) if the server "
             "provided a workid, it MUST be included with submissions\n"
             "    }\n"
+            "3. \"legacy\"         (boolean, optional) indicates if the block is in legacy foramt. default: false.\n"
             "\nResult:\n"
             "\nExamples:\n" +
             HelpExampleCli("submitblock", "\"mydata\"") +
@@ -879,7 +938,11 @@ static UniValue submitblock(const Config &config,
 
     std::shared_ptr<CBlock> blockptr = std::make_shared<CBlock>();
     CBlock &block = *blockptr;
-    if (!DecodeHexBlk(block, request.params[0].get_str())) {
+    bool legacy_format = false;
+    if (request.params.size() == 3 && request.params[2].get_bool() == true) {
+     legacy_format = true;
+    }
+    if (!DecodeHexBlk(block, request.params[0].get_str(),legacy_format)) {
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block decode failed");
     }
 

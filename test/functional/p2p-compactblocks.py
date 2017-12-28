@@ -315,7 +315,7 @@ class CompactBlocksTest(BitcoinTestFramework):
         block_hash = int(node.generate(1)[0], 16)
 
         # Store the raw block in our internal format.
-        block = FromHex(CBlock(), node.getblock("%02x" % block_hash, False))
+        block = FromHex(CBlock(), node.getblock("%02x" % block_hash, False, True))
         [tx.calc_sha256() for tx in block.vtx]
         block.rehash()
 
@@ -634,8 +634,7 @@ class CompactBlocksTest(BitcoinTestFramework):
         current_height = chain_height
         while (current_height >= chain_height - MAX_GETBLOCKTXN_DEPTH):
             block_hash = node.getblockhash(current_height)
-            block = FromHex(CBlock(), node.getblock(block_hash, False))
-
+            block = FromHex(CBlock(), node.getblock(block_hash, False, True))
             msg = msg_getblocktxn()
             msg.block_txn_request = BlockTransactionsRequest(
                 int(block_hash, 16), [])
@@ -749,7 +748,7 @@ class CompactBlocksTest(BitcoinTestFramework):
 
         [l.clear_block_announcement() for l in listeners]
 
-        node.submitblock(ToHex(block))
+        node.submitblock(ToHex(block), '', True)
 
         for l in listeners:
             wait_until(lambda: l.received_block_announcement(), timeout=30)

@@ -113,7 +113,7 @@ class NULLDUMMYTest(BitcoinTestFramework):
         block.hashMerkleRoot = block.calc_merkle_root()
         block.rehash()
         block.solve()
-        node.submitblock(bytes_to_hex_str(block.serialize(True)))
+        node.submitblock(bytes_to_hex_str(block.serialize(True)), "", True)
         if (accept):
             assert_equal(node.getbestblockhash(), block.hash)
             self.tip = block.sha256

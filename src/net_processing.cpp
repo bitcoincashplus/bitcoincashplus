@@ -28,8 +28,10 @@
 #include "util.h"
 #include "utilmoneystr.h"
 #include "utilstrencodings.h"
+#include "version.h"
 #include "validation.h"
 #include "validationinterface.h"
+
 
 #include <boost/range/adaptor/reversed.hpp>
 #include <boost/thread.hpp>
@@ -1231,10 +1233,11 @@ static void ProcessGetData(const Config &config, CNode *pfrom,
                     if (!ReadBlockFromDisk(block, (*mi).second, config)) {
                         assert(!"cannot load block from disk");
                     }
+                    int legacyFlag = (pfrom->IsLegacyBlockHeader(pfrom->GetSendVersion()) ? SERIALIZE_BLOCK_LEGACY : 0);
 
                     if (inv.type == MSG_BLOCK) {
                         connman.PushMessage(
-                            pfrom, msgMaker.Make(NetMsgType::BLOCK, block));
+                            pfrom, msgMaker.Make(legacyFlag,NetMsgType::BLOCK, block));
                     } else if (inv.type == MSG_FILTERED_BLOCK) {
                         bool sendMerkleBlock = false;
                         CMerkleBlock merkleBlock;
@@ -1248,7 +1251,7 @@ static void ProcessGetData(const Config &config, CNode *pfrom,
                         }
                         if (sendMerkleBlock) {
                             connman.PushMessage(
-                                pfrom, msgMaker.Make(NetMsgType::MERKLEBLOCK,
+                                pfrom, msgMaker.Make(legacyFlag,NetMsgType::MERKLEBLOCK,
                                                      merkleBlock));
                             // CMerkleBlock just contains hashes, so also push
                             // any transactions in the block the client did not
@@ -1265,7 +1268,7 @@ static void ProcessGetData(const Config &config, CNode *pfrom,
                             for (PairType &pair : merkleBlock.vMatchedTxn) {
                                 connman.PushMessage(
                                     pfrom,
-                                    msgMaker.Make(NetMsgType::TX,
+                                    msgMaker.Make(legacyFlag,NetMsgType::TX,
                                                   *block.vtx[pair.first]));
                             }
                         }
@@ -1277,7 +1280,7 @@ static void ProcessGetData(const Config &config, CNode *pfrom,
                         // against a compact block, and we don't feel like
                         // constructing the object for them, so instead we
                         // respond with the full, non-compact block.
-                        int nSendFlags = 0;
+                        int nSendFlags = 0|legacyFlag;
                         if (CanDirectFetch(consensusParams) &&
                             mi->second->nHeight >=
                                 chainActive.Height() - MAX_CMPCTBLOCK_DEPTH) {
@@ -1394,8 +1397,8 @@ static bool ProcessMessage(const Config &config, CNode *pfrom,
                            int64_t nTimeReceived,
                            const CChainParams &chainparams, CConnman &connman,
                            const std::atomic<bool> &interruptMsgProc) {
-    LogPrint("net", "received: %s (%u bytes) peer=%d\n",
-             SanitizeString(strCommand), vRecv.size(), pfrom->id);
+
+    LogPrintf("received: %s (%u bytes) peer=%d\n", SanitizeString(strCommand), vRecv.size(), pfrom->GetId());
     if (IsArgSet("-dropmessagestest") &&
         GetRand(GetArg("-dropmessagestest", 0)) == 0) {
         LogPrintf("dropmessagestest DROPPING RECV MESSAGE\n");
@@ -1656,7 +1659,7 @@ static bool ProcessMessage(const Config &config, CNode *pfrom,
             // nodes)
             connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::SENDHEADERS));
         }
-        if (pfrom->nVersion >= SHORT_IDS_BLOCKS_VERSION) {
+        if (pfrom->nVersion >= SHORT_IDS_BLOCKS_VERSION  && !DISABLE_CMPCTBLOCK) {
             // Tell our peer we are willing to provide version 1 or 2
             // cmpctblocks. However, we do not request new block announcements
             // using cmpctblock messages. We send this to non-NODE NETWORK peers
@@ -1735,23 +1738,30 @@ static bool ProcessMessage(const Config &config, CNode *pfrom,
     }
 
     else if (strCommand == NetMsgType::SENDCMPCT) {
-        bool fAnnounceUsingCMPCTBLOCK = false;
-        uint64_t nCMPCTBLOCKVersion = 0;
-        vRecv >> fAnnounceUsingCMPCTBLOCK >> nCMPCTBLOCKVersion;
-        if (nCMPCTBLOCKVersion == 1) {
-            LOCK(cs_main);
-            // fProvidesHeaderAndIDs is used to "lock in" version of compact
-            // blocks we send.
-            if (!State(pfrom->GetId())->fProvidesHeaderAndIDs) {
-                State(pfrom->GetId())->fProvidesHeaderAndIDs = true;
-            }
 
-            State(pfrom->GetId())->fPreferHeaderAndIDs =
-                fAnnounceUsingCMPCTBLOCK;
-            if (!State(pfrom->GetId())->fSupportsDesiredCmpctVersion) {
-                State(pfrom->GetId())->fSupportsDesiredCmpctVersion = true;
-            }
+        if (DISABLE_CMPCTBLOCK) {
+            LogPrint("net", "Ignoring command \"%s\" from peer=%d because SENDCMPCT is temporarily disabled\n",
+                     SanitizeString(strCommand), pfrom->GetId());
         }
+        else {
+            bool fAnnounceUsingCMPCTBLOCK = false;
+            uint64_t nCMPCTBLOCKVersion = 0;
+            vRecv >> fAnnounceUsingCMPCTBLOCK >> nCMPCTBLOCKVersion;
+            if (nCMPCTBLOCKVersion == 1) {
+                LOCK(cs_main);
+                // fProvidesHeaderAndIDs is used to "lock in" version of compact
+                // blocks we send.
+                if (!State(pfrom->GetId())->fProvidesHeaderAndIDs) {
+                    State(pfrom->GetId())->fProvidesHeaderAndIDs = true;
+                }
+
+                State(pfrom->GetId())->fPreferHeaderAndIDs =
+                    fAnnounceUsingCMPCTBLOCK;
+                if (!State(pfrom->GetId())->fSupportsDesiredCmpctVersion) {
+                    State(pfrom->GetId())->fSupportsDesiredCmpctVersion = true;
+                }
+             }
+         }
     }
 
     else if (strCommand == NetMsgType::INV) {
@@ -3482,13 +3492,16 @@ bool SendMessages(const Config &config, CNode *pto, CConnman &connman,
                              __func__, vHeaders.size(),
                              vHeaders.front().GetHash().ToString(),
                              vHeaders.back().GetHash().ToString(), pto->id);
+
                 } else {
                     LogPrint("net", "%s: sending header %s to peer=%d\n",
                              __func__, vHeaders.front().GetHash().ToString(),
                              pto->id);
                 }
+               int legacyFlag = pto->IsLegacyBlockHeader(pto->GetSendVersion()) ? SERIALIZE_BLOCK_LEGACY : 0;
+
                 connman.PushMessage(
-                    pto, msgMaker.Make(NetMsgType::HEADERS, vHeaders));
+                    pto, msgMaker.Make(legacyFlag,NetMsgType::HEADERS, vHeaders));
                 state.pindexBestHeaderSent = pBestIndex;
             } else {
                 fRevertToInv = true;

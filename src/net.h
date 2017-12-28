@@ -22,7 +22,7 @@
 #include "sync.h"
 #include "threadinterrupt.h"
 #include "uint256.h"
-
+#include "primitives/block.h"
 #include <atomic>
 #include <condition_variable>
 #include <cstdint>
@@ -566,6 +566,9 @@ public:
     const uint256 &GetMessageHash() const;
 
     void SetVersion(int nVersionIn) {
+    if (nVersionIn < BCP_HARD_FORK_VERSION){
+        nVersionIn |= SERIALIZE_BLOCK_LEGACY;
+    }
         hdrbuf.SetVersion(nVersionIn);
         vRecv.SetVersion(nVersionIn);
     }
@@ -810,6 +813,9 @@ public:
     std::string GetAddrName() const;
     //! Sets the addrName only if it was not previously set
     void MaybeSetAddrName(const std::string &addrNameIn);
+
+    bool IsLegacyBlockHeader(int version) { return version<BCP_HARD_FORK_VERSION;}
+
 };
 
 /**

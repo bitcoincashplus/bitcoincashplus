@@ -6,9 +6,18 @@
 #ifndef BITCOIN_PRIMITIVES_BLOCK_H
 #define BITCOIN_PRIMITIVES_BLOCK_H
 
+#include "arith_uint256.h"
 #include "primitives/transaction.h"
 #include "serialize.h"
 #include "uint256.h"
+#include "version.h"
+
+namespace Consensus {
+    struct Params;
+};
+
+
+static const int SERIALIZE_BLOCK_LEGACY = 0x04000000;
 
 /**
  * Nodes collect new transactions into a block, hash them into a hash tree, and
@@ -24,9 +33,13 @@ public:
     int32_t nVersion;
     uint256 hashPrevBlock;
     uint256 hashMerkleRoot;
+    uint32_t nHeight;
+    uint32_t nReserved[7];
     uint32_t nTime;
     uint32_t nBits;
-    uint32_t nNonce;
+    uint256 nNonce;
+    std::vector<unsigned char> nSolution;  // Equihash solution.
+
 
     CBlockHeader() { SetNull(); }
 
@@ -34,11 +47,28 @@ public:
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream &s, Operation ser_action) {
+        bool new_format = !(s.GetVersion() & SERIALIZE_BLOCK_LEGACY);
         READWRITE(this->nVersion);
         READWRITE(hashPrevBlock);
         READWRITE(hashMerkleRoot);
+        if (new_format) {
+            READWRITE(nHeight);
+            for(size_t i = 0; i < (sizeof(nReserved) / sizeof(nReserved[0])); i++) {
+                READWRITE(nReserved[i]);
+            }
+        }
+
         READWRITE(nTime);
         READWRITE(nBits);
+        if (new_format) {
+            READWRITE(nNonce);
+            READWRITE(nSolution);
+        } else {
+            uint32_t legacy_nonce = (uint32_t)nNonce.GetUint64(0);
+            READWRITE(legacy_nonce);
+            nNonce = ArithToUint256(arith_uint256(legacy_nonce));
+        }
+
         READWRITE(nNonce);
     }
 
@@ -46,14 +76,21 @@ public:
         nVersion = 0;
         hashPrevBlock.SetNull();
         hashMerkleRoot.SetNull();
+        nHeight = 0;
+        memset(nReserved, 0, sizeof(nReserved));
         nTime = 0;
         nBits = 0;
-        nNonce = 0;
+        nNonce.SetNull();
+        nNonce.SetNull();
+        nSolution.clear();
+
     }
 
     bool IsNull() const { return (nBits == 0); }
 
     uint256 GetHash() const;
+
+    uint256 GetHash(const Consensus::Params& params) const;
 
     int64_t GetBlockTime() const { return (int64_t)nTime; }
 };
@@ -92,15 +129,46 @@ public:
         block.nVersion = nVersion;
         block.hashPrevBlock = hashPrevBlock;
         block.hashMerkleRoot = hashMerkleRoot;
+        block.nHeight        = nHeight;
+        memcpy(block.nReserved, nReserved, sizeof(block.nReserved));
         block.nTime = nTime;
         block.nBits = nBits;
         block.nNonce = nNonce;
+        block.nSolution  = nSolution;
         return block;
     }
 
     std::string ToString() const;
 };
 
+/**
+ * Custom serializer for CBlockHeader that omits the nonce and solution, for use
+ * as input to Equihash.
+ */
+class CEquihashInput : private CBlockHeader
+{
+public:
+    CEquihashInput(const CBlockHeader &header)
+    {
+        CBlockHeader::SetNull();
+        *((CBlockHeader*)this) = header;
+    }
+
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action) {
+        READWRITE(this->nVersion);
+        READWRITE(hashPrevBlock);
+        READWRITE(hashMerkleRoot);
+        READWRITE(nHeight);
+        for(size_t i = 0; i < (sizeof(nReserved) / sizeof(nReserved[0])); i++) {
+            READWRITE(nReserved[i]);
+        }
+        READWRITE(nTime);
+        READWRITE(nBits);
+    }
+};
 /**
  * Describes a place in the block chain to another node such that if the other
  * node doesn't have the same branch, it can find a recent common trunk.  The

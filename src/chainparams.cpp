@@ -5,29 +5,24 @@
 
 #include "chainparams.h"
 #include "consensus/merkle.h"
-
 #include "uint256.h"
 #include "arith_uint256.h"
 
 #include "tinyformat.h"
 #include "util.h"
 #include "utilstrencodings.h"
-
-
 #include "net.h"
 #include "validation.h"
 #include "chainparamsseeds.h"
 
 #include "base58.h"
+#include "crypto/equihash.h"
 #include <assert.h>
 #include <boost/assign/list_of.hpp>
 
-// For equihash_parameters_acceptable.
-#include "crypto/equihash.h"
-#include "net.h"
-#include "validation.h"
+
 #define equihash_parameters_acceptable(N, K) \
-    ((CBlockHeader::HEADER_SIZE + equihash_solution_size(N, K))*MAX_HEADERS_RESULTS < \
+    ((CMessageHeader::HEADER_SIZE + equihash_solution_size(N, K))*MAX_HEADERS_RESULTS < \
      MAX_PROTOCOL_MESSAGE_LENGTH-1000)
 
 // Far into the future.
@@ -52,8 +47,9 @@ static CBlock CreateGenesisBlock(const char *pszTimestamp,const CScript &genesis
     CBlock genesis;
     genesis.nTime = nTime;
     genesis.nBits = nBits;
-    genesis.nNonce = nNonce;
+    genesis.nNonce = ArithToUint256(arith_uint256(nNonce));
     genesis.nVersion = nVersion;
+    genesis.nHeight  = 0;
     genesis.vtx.push_back(MakeTransactionRef(std::move(txNew)));
     genesis.hashPrevBlock.SetNull();
     genesis.hashMerkleRoot = BlockMerkleRoot(genesis);
@@ -106,9 +102,8 @@ public:
         consensus.BIP65Height = 388381; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
         consensus.BIP66Height = 363725; // 00000000000000000379eaa19dce8c9b722d46ae6a57c2f1a988119488b50931
 
-         consensus.antiReplayOpReturnSunsetHeight = 530000;
+        consensus.antiReplayOpReturnSunsetHeight = 530000;
         consensus.antiReplayOpReturnCommitment = GetAntiReplayCommitment();
-
         consensus.BCPHeight = 501407; //
         consensus.BCPPremineWindow = 4000;
         consensus.powLimit = uint256S("0007ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
@@ -168,7 +163,7 @@ public:
 
 
         genesis = CreateGenesisBlock(1231006505, 2083236893, 0x1d00ffff, 1, 50 * COIN);
-        consensus.hashGenesisBlock = genesis.GetHash();
+        consensus.hashGenesisBlock = genesis.GetHash(consensus);
         assert(consensus.hashGenesisBlock == uint256S("0x000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"));
         assert(genesis.hashMerkleRoot == uint256S("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
 
@@ -233,7 +228,7 @@ public:
         consensus.BIP65Height = 581885; // 00000000007f6655f22f98e72ed80d8b06dc761d5da09df0fa1dc4be4f861eb6
         consensus.BIP66Height = 330776; // 000000002104c8c45e99a8853285a3b592602a3ccde2b832481da85e9e4ba182
 
-        consensus.BCPHeight = 1210320;
+        consensus.BCPHeight = 1310320;
         consensus.BCPPremineWindow = 50;
 
         consensus.antiReplayOpReturnSunsetHeight = 1250000;
@@ -292,7 +287,7 @@ public:
 
 
         genesis = CreateGenesisBlock(1296688602, 414098458, 0x1d00ffff, 1, 50 * COIN);
-        consensus.hashGenesisBlock = genesis.GetHash();
+        consensus.hashGenesisBlock = genesis.GetHash(consensus);
         assert(consensus.hashGenesisBlock == uint256S("0x000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943"));
         assert(genesis.hashMerkleRoot == uint256S("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
 
@@ -396,7 +391,7 @@ public:
 
 
         genesis = CreateGenesisBlock(1296688602, 2, 0x207fffff, 1, 50 * COIN);
-        consensus.hashGenesisBlock = genesis.GetHash();
+        consensus.hashGenesisBlock = genesis.GetHash(consensus);
         assert(consensus.hashGenesisBlock == uint256S("0x0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206"));
         assert(genesis.hashMerkleRoot == uint256S("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
 

@@ -25,6 +25,7 @@
 #include "utilmoneystr.h"
 #include "validation.h"
 #include "validationinterface.h"
+#include "uint256.h"
 
 #include <algorithm>
 #include <queue>
@@ -202,17 +203,22 @@ BlockAssembler::CreateNewBlock(const CScript &scriptPubKeyIn) {
     pblock->vtx[0] = MakeTransactionRef(coinbaseTx);
     pblocktemplate->vTxFees[0] = -1 * nFees;
 
+    int serFlags = (nHeight < chainparams.GetConsensus().BCPHeight) ?SERIALIZE_BLOCK_LEGACY : 0;
+
     uint64_t nSerializeSize =
-        GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION);
+        GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION|serFlags);
 
     LogPrintf("CreateNewBlock(): total size: %u txs: %u fees: %ld sigops %d\n",
               nSerializeSize, nBlockTx, nFees, nBlockSigOps);
+
 
     // Fill in header.
     pblock->hashPrevBlock = pindexPrev->GetBlockHash();
     UpdateTime(pblock, *config, pindexPrev);
     pblock->nBits = GetNextWorkRequired(pindexPrev, pblock, *config);
-    pblock->nNonce = 0;
+    pblock->nNonce = uint256();
+    pblock->nHeight        = pindexPrev->nHeight + 1;
+    pblock->nSolution.clear();
     pblocktemplate->vTxSigOpsCount[0] =
         GetSigOpCountWithoutP2SH(*pblock->vtx[0]);
 

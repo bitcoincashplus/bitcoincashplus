@@ -1613,6 +1613,10 @@ static bool LockDataDirectory(bool probeOnly) {
 bool AppInitSanityChecks() {
     // Step 4: sanity checks
 
+    //initialzie sodium
+    if (init_and_check_sodium() == -1) {
+        return false;
+    }
     // Initialize elliptic curve code
     ECC_Start();
     globalVerifyHandle.reset(new ECCVerifyHandle());

@@ -365,7 +365,7 @@ class BIP68Test(BitcoinTestFramework):
             block.solve()
             tip = block.sha256
             height += 1
-            self.nodes[0].submitblock(ToHex(block))
+            self.nodes[0].submitblock(ToHex(block), '', True)
             cur_time += 1
 
         mempool = self.nodes[0].getrawmempool()
@@ -431,7 +431,7 @@ class BIP68Test(BitcoinTestFramework):
         block.rehash()
         block.solve()
 
-        self.nodes[0].submitblock(ToHex(block))
+        self.nodes[0].submitblock(ToHex(block), '', True)
         assert_equal(self.nodes[0].getbestblockhash(), block.hash)
 
     def activateCSV(self):

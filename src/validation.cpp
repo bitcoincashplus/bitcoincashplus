@@ -1135,6 +1135,12 @@ bool ReadBlockFromDisk(CBlock &block, const CDiskBlockPos &pos,
         return error("%s: Deserialize or I/O error - %s at %s", __func__,
                      e.what(), pos.ToString());
     }
+  // Check Equihash solution
+    bool postfork = block.nHeight >= (uint32_t)config.GetChainParams().GetConsensus().BCPHeight;
+    if (postfork && !CheckEquihashSolution(&block, config)) {
+        return error("ReadBlockFromDisk: Errors in block header at %s (bad Equihash solution)", pos.ToString());
+    }
+
 
     // Check the header
     if (!CheckProofOfWork(block.GetHash(), block.nBits, config)) {
@@ -3186,6 +3192,15 @@ bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos,
 
 static bool CheckBlockHeader(const Config &config, const CBlockHeader &block,
                              CValidationState &state, bool fCheckPOW = true) {
+
+  // Check Equihash solution is valid
+    bool postfork = block.nHeight >= (uint32_t)config.GetChainParams().GetConsensus().BCPHeight;
+    if (fCheckPOW && postfork && !CheckEquihashSolution(&block, config)) {
+        LogPrintf("CheckBlockHeader(): Equihash solution invalid at height %d\n", block.nHeight);
+        return state.DoS(100, error("CheckBlockHeader(): Equihash solution invalid"),
+                         REJECT_INVALID, "invalid-solution");
+    }
+
     // Check proof of work matches claimed amount
     if (fCheckPOW && !CheckProofOfWork(block.GetHash(), block.nBits, config)) {
         return state.DoS(50, false, REJECT_INVALID, "high-hash", false,
@@ -3238,6 +3253,11 @@ bool CheckBlock(const Config &config, const CBlock &block,
     }
 
     // Size limits.
+     int serialization_flags=0;
+
+    if (block.nHeight < (uint32_t)config.GetChainParams().GetConsensus().BCPHeight) {
+        serialization_flags |= SERIALIZE_BLOCK_LEGACY;
+    }
     auto nMaxBlockSize = config.GetMaxBlockSize();
 
     // Bail early if there is no way this block is of reasonable size.
@@ -3247,7 +3267,7 @@ bool CheckBlock(const Config &config, const CBlock &block,
     }
 
     auto currentBlockSize =
-        ::GetSerializeSize(block, SER_NETWORK, PROTOCOL_VERSION);
+        ::GetSerializeSize(block, SER_NETWORK, PROTOCOL_VERSION|serialization_flags);
     if (currentBlockSize > nMaxBlockSize) {
         return state.DoS(100, false, REJECT_INVALID, "bad-blk-length", false,
                          "size limits failed");
@@ -3347,6 +3367,13 @@ static bool ContextualCheckBlockHeader(const Config &config,
                          "incorrect proof of work");
     }
 
+
+    // Check block height for blocks after BCP fork.
+    if (nHeight >= consensusParams.BCPHeight && block.nHeight !=(uint32_t)nHeight){
+        return state.Invalid(false, REJECT_INVALID, "bad-height", "incorrect block height");
+    }
+
+
     // Check timestamp against prev
     if (block.GetBlockTime() <= pindexPrev->GetMedianTimePast()) {
         return state.Invalid(false, REJECT_INVALID, "time-too-old",
@@ -3364,12 +3391,13 @@ static bool ContextualCheckBlockHeader(const Config &config,
     // check for version 2, 3 and 4 upgrades
     if ((block.nVersion < 2 && nHeight >= consensusParams.BIP34Height) ||
         (block.nVersion < 3 && nHeight >= consensusParams.BIP66Height) ||
-        (block.nVersion < 4 && nHeight >= consensusParams.BIP65Height)) {
-        return state.Invalid(
-            false, REJECT_OBSOLETE,
-            strprintf("bad-version(0x%08x)", block.nVersion),
-            strprintf("rejected nVersion=0x%08x block", block.nVersion));
-    }
+        (block.nVersion < 4 && nHeight >= consensusParams.BIP65Height)||
+          (block.nVersion < VERSIONBITS_TOP_BITS && nHeight >= consensusParams.BCPHeight)){
+                return state.Invalid(
+                    false, REJECT_OBSOLETE,
+                    strprintf("bad-version(0x%08x)", block.nVersion),
+                    strprintf("rejected nVersion=0x%08x block", block.nVersion));
+     }
 
     return true;
 }
