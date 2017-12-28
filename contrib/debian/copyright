@@ -19,6 +19,12 @@ Copyright: 2010-2011, Jonas Smedegaard <dr@jones.dk>
            2017, freetrader <freetrader@tuta.io>
 License: GPL-2+
 
+Files: depends/sources/libsodium-*.tar.gz
+Copyright: 2013-2016 Frank Denis
+License: ISC
+
+
+
 Files: src/qt/res/icons/add.png
        src/qt/res/icons/address-book.png
        src/qt/res/icons/chevron.png
