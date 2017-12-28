@@ -180,10 +180,10 @@ void DebugMessageHandler(QtMsgType type, const QMessageLogContext &context,
  * Class encapsulating Bitcoin ABC startup and shutdown.
  * Allows running startup and shutdown in a different thread from the UI thread.
  */
-class BitcoinABC : public QObject {
+class BitcoinCashPlus : public QObject {
     Q_OBJECT
 public:
-    explicit BitcoinABC();
+    explicit BitcoinCashPlus();
 
 public Q_SLOTS:
     void initialize(Config *config);
@@ -265,14 +265,14 @@ private:
 
 #include "bitcoin.moc"
 
-BitcoinABC::BitcoinABC() : QObject() {}
+BitcoinCashPlus::BitcoinCashPlus() : QObject() {}
 
-void BitcoinABC::handleRunawayException(const std::exception *e) {
+void BitcoinCashPlus::handleRunawayException(const std::exception *e) {
     PrintExceptionContinue(e, "Runaway exception");
     Q_EMIT runawayException(QString::fromStdString(GetWarnings("gui")));
 }
 
-void BitcoinABC::initialize(Config *cfg) {
+void BitcoinCashPlus::initialize(Config *cfg) {
     Config &config(*cfg);
     try {
         qDebug() << __func__ << ": Running AppInit2 in thread";
@@ -300,7 +300,7 @@ void BitcoinABC::initialize(Config *cfg) {
     }
 }
 
-void BitcoinABC::shutdown() {
+void BitcoinCashPlus::shutdown() {
     try {
         qDebug() << __func__ << ": Running Shutdown in thread";
         Interrupt(threadGroup);
@@ -390,7 +390,7 @@ void BitcoinApplication::createSplashScreen(const NetworkStyle *networkStyle) {
 void BitcoinApplication::startThread() {
     if (coreThread) return;
     coreThread = new QThread(this);
-    BitcoinABC *executor = new BitcoinABC();
+    BitcoinCashPlus *executor = new BitcoinCashPlus();
     executor->moveToThread(coreThread);
 
     /*  communication to and from thread */

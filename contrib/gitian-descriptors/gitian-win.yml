@@ -31,7 +31,7 @@ alternatives:
 - "package" : "x86_64-w64-mingw32-g++"
   "path" : "/usr/bin/x86_64-w64-mingw32-g++-posix"
 remotes:
-- "url": "https://github.com/Bitcoin-ABC/bitcoin-abc.git"
+- "url": "https://github.com/bitcoincashplus/bitcoincashplus.git"
   "dir": "bitcoin"
 files: []
 script: |

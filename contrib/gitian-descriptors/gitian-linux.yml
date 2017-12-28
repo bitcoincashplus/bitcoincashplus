@@ -34,7 +34,7 @@ packages:
 - "libc6-dev:i386"
 - "libstdc++6:i386"
 remotes:
-- "url": "https://github.com/Bitcoin-ABC/bitcoin-abc.git"
+- "url": "https://github.com/bitcoincashplus/bitcoincashplus.git"
   "dir": "bitcoin"
 files: []
 script: |

@@ -14,7 +14,7 @@ import tempfile
 # Maximum amount of output (in bytes) to keep in memory before
 # flushing to temporary file.
 # Set to 0 to avoid Travis CI test failure due to MemoryError.
-# Refer https://reviews.bitcoinabc.org/T53
+# Refer https://reviews.bitcoincashplus.org/T53
 MEMORY_BUFFER_SIZE = 0
 
 

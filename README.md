@@ -1,36 +1,12 @@
-Bitcoin ABC
-===========
+# Bitcoin CashPlus
 
-https://bitcoinabc.org
+[![Build Status](https://travis-ci.org/bitcoincashplus/bitcoincashplus.svg?branch=master)](https://travis-ci.org/bitcoincashplus/bitcoincashplus)
 
-What is Bitcoin Cash?
----------------------
+Bitcoin Cash Plus is a fork of the Bitcoin blockchain that will occur at block height 510000, at roughly 12:00:00 UTC December 2nd 2018.
 
-[Bitcoin Cash](https://www.bitcoincash.org/) is an experimental digital currency
-that enables instant payments to anyone, anywhere in the world. It uses peer-to-peer
-technology to operate with no central authority: managing transactions and issuing
-money are carried out collectively by the network. Bitcoin Cash is a descendant of
-Bitcoin. It became a separate currency from the version supported by Bitcoin Core
-when the two split on August 1, 2017. Bitcoin Cash and the Bitcoin Core version of
-Bitcoin share the same transaction history up until the split.
+At the predetermined block height, Bitcoin Cash Plus miners will begin creating blocks with a new proof-of-work algorithm, and this will cause a bifurcation of the Bitcoin blockchain. The original Bitcoin blockchain will continue on unaltered, but a new branch of the blockchain will split off from the original chain. The new branch is a distinct blockchain with the same transaction history as Bitcoin up until the fork, but then diverges from it. As a result of this process, a new cryptocurrency will be born.
 
-What is Bitcoin ABC?
---------------------
-
-Bitcoin ABC is the name of open source software which enables the use of Bitcoin Cash.
-It is a fork of the [Bitcoin Core](https://bitcoincore.org) software project.
-
-License
--------
-
-Bitcoin ABC is released under the terms of the MIT license. See [COPYING](COPYING) for more
-information or see https://opensource.org/licenses/MIT.
-
-Development Process
--------------------
-
-This Github repository contains only source code of releases.
-
-Bitcoin ABC development takes place at https://reviews.bitcoinabc.org/
-
-If you would like to contribute, please read [CONTRIBUTING](CONTRIBUTING.md)
+## Links
+https://t.co/g3trObTJgC
+* Website: http://bitcoincashplus.org
+* Slack: [invitation](https://slackpass.io/bitcoincashplus)

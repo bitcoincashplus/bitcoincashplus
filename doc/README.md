@@ -5,7 +5,7 @@ Setup
 ---------------------
 Bitcoin ABC is a fork of Bitcoin Core, which is the original Bitcoin client and builds the backbone of the network. It downloads and stores the entire history of Bitcoin transactions (which is currently several GBs); depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more.
 
-To download Bitcoin ABC, visit [bitcoinabc.org](https://download.bitcoinabc.org/).
+To download Bitcoin ABC, visit [bitcoincashplus.org](https://download.bitcoincashplus.org/).
 
 Running
 ---------------------
@@ -30,7 +30,6 @@ Drag bitcoin-abc to your applications folder, and then run bitcoin-abc.
 
 * See the documentation at the [Bitcoin Wiki](https://en.bitcoin.it/wiki/Main_Page)
 for help and more information.
-* Ask for help on the [Bitcoin ABC Subreddit](https://www.reddit.com/r/BitcoinABC/).
 
 Building
 ---------------------
