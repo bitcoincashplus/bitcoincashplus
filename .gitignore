@@ -2,8 +2,8 @@
 
 *.exe
 src/bitcoin
-src/bitcoind
-src/bitcoin-cli
+src/bcashplusd
+src/bcashplus-cli
 src/bitcoin-seeder
 src/bitcoin-tx
 src/test/test_bitcoin

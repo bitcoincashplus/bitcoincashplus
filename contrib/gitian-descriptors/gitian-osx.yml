@@ -1,5 +1,5 @@
 ---
-name: "bitcoincashplus-0.16-osx"
+name: "bitcoin-cashplus-0.16-osx"
 enable_cache: true
 suites:
 - "xenial"
@@ -29,7 +29,7 @@ packages:
 - "fonts-tuffy"
 remotes:
 - "url": "https://github.com/bitcoincashplus/bitcoincashplus.git"
-  "dir": "bitcoin"
+  "dir": "bitcoincashplus"
 files:
 - "MacOSX10.11.sdk.tar.gz"
 script: |
@@ -83,7 +83,7 @@ script: |
   create_per-host_faketime_wrappers "2000-01-01 12:00:00"
   export PATH=${WRAP_DIR}:${PATH}
 
-  cd bitcoin
+  cd bitcoincashplus
   BASEPREFIX=`pwd`/depends
 
   mkdir -p ${BASEPREFIX}/SDKs
@@ -104,14 +104,14 @@ script: |
   ./autogen.sh
   CONFIG_SITE=${BASEPREFIX}/`echo "${HOSTS}" | awk '{print $1;}'`/share/config.site ./configure --prefix=/
   make dist
-  SOURCEDIST=`echo bitcoincashplus-*.tar.gz`
+  SOURCEDIST=`echo bitcoin-cashplus-*.tar.gz`
   DISTNAME=`echo ${SOURCEDIST} | sed 's/.tar.*//'`
 
   # Correct tar file order
   mkdir -p temp
   pushd temp
   tar xf ../$SOURCEDIST
-  find bitcoincashplus-* | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ../$SOURCEDIST
+  find bitcoin-cashplus-* | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ../$SOURCEDIST
   popd
 
   ORIGPATH="$PATH"
