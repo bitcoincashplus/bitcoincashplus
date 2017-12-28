@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(test_antireplay) {
 
     // The anti replay rule start at uahfHeight and stops at
     // antiReplayOpReturnSunsetHeight.
-    const int nUAHFHeight = params.uahfHeight;
+    const int nUAHFHeight = params.BCPHeight;
     const int nSunsetHeight = params.antiReplayOpReturnSunsetHeight;
 
     const int64_t nUAHFStartTime = 123456;

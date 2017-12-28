@@ -26,19 +26,19 @@ private:
 BOOST_FIXTURE_TEST_SUITE(dstencode_tests, BasicTestingSetup)
 
 BOOST_AUTO_TEST_CASE(test_addresses) {
-    std::vector<uint8_t> hash = {118, 160, 64,  83,  189, 160, 168,
-                                 139, 218, 81,  119, 184, 106, 21,
-                                 195, 178, 159, 85,  152, 115};
+    std::vector<uint8_t> hash = {0, 17, 128, 5, 246, 174, 201,
+                                 130, 217, 236, 131, 136, 199,148,
+                                 26, 202, 163, 58, 140, 221};
 
     const CTxDestination dstKey = CKeyID(uint160(hash));
     const CTxDestination dstScript = CScriptID(uint160(hash));
 
     std::string cashaddr_pubkey =
-        "bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a";
+        "bitcoincash:qqqprqq976hvnqkeajpc33u5rt92xw5vm5mkhnvy5w";
     std::string cashaddr_script =
-        "bitcoincash:ppm2qsznhks23z7629mms6s4cwef74vcwvn0h829pq";
-    std::string base58_pubkey = "1BpEi6DfDAUFd7GtittLSdBeYJvcoaVggu";
-    std::string base58_script = "3CWFddi6m4ndiGyKqzYvsFYagqDLPVMTzC";
+        "bitcoincash:pqqprqq976hvnqkeajpc33u5rt92xw5vm5vn2ut80n";
+    std::string base58_pubkey = "CGUFXy9eQgs3eunVAEqFdS9tnkEcgLw9VD";
+    std::string base58_script = "AFnEcRfCrnYfZk6439AfConxeDwu6kYGdb";
 
     const CChainParams &params = Params(CBaseChainParams::MAIN);
     DstCfgDummy cfg;

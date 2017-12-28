@@ -48,10 +48,12 @@ struct Params {
     int BIP65Height;
     /** Block height at which BIP66 becomes active */
     int BIP66Height;
-    /** Block height at which UAHF kicks in */
-    int uahfHeight;
-    /** Block height at which the new DAA becomes active */
-    int daaHeight;
+     /** Block height at which Bitcoin Cash Plus  hard fork becomes active */
+    int BCPHeight;
+
+    /** Premining blocks for  Bitcoin Cash Plus  hard fork **/
+    int BCPPremineWindow;
+
     /** Block height at which OP_RETURN replay protection stops */
     int antiReplayOpReturnSunsetHeight;
     /** Committed OP_RETURN value for replay protection */
@@ -65,17 +67,35 @@ struct Params {
     uint32_t nRuleChangeActivationThreshold;
     uint32_t nMinerConfirmationWindow;
     BIP9Deployment vDeployments[MAX_VERSION_BITS_DEPLOYMENTS];
+
     /** Proof of work parameters */
     uint256 powLimit;
+    uint256 powLimitLegacy;
+    uint256 powLimitStart;
+
+
     bool fPowAllowMinDifficultyBlocks;
     bool fPowNoRetargeting;
     int64_t nPowTargetSpacing;
     int64_t nPowTargetTimespan;
+    int64_t nPowTargetTimespanLegacy;
+
     int64_t DifficultyAdjustmentInterval() const {
         return nPowTargetTimespan / nPowTargetSpacing;
     }
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
+
+    const uint256& PowLimit(bool postfork) const { return postfork ? powLimit : powLimitLegacy; }
+
+
+    //Zcash logic for diff adjustment
+   int64_t nPowAveragingWindow;
+   int64_t nPowMaxAdjustDown;
+   int64_t nPowMaxAdjustUp;
+   int64_t AveragingWindowTimespan() const { return nPowAveragingWindow * nPowTargetSpacing; }
+   int64_t MinActualTimespan() const { return (AveragingWindowTimespan() * (100 - nPowMaxAdjustUp  )) / 100; }
+   int64_t MaxActualTimespan() const { return (AveragingWindowTimespan() * (100 + nPowMaxAdjustDown)) / 100; }
 };
 } // namespace Consensus
 

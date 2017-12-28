@@ -506,10 +506,10 @@ int main(int argc, char **argv) {
     bool fDNS = true;
     if (opts.fUseTestNet) {
         printf("Using testnet.\n");
-        netMagic[0] = 0xf4;
-        netMagic[1] = 0xe5;
-        netMagic[2] = 0xf3;
-        netMagic[3] = 0xf4;
+        netMagic[0] = 0x45;
+        netMagic[1] = 0x6d;
+        netMagic[2] = 0x47;
+        netMagic[3] = 0xe1;
         seeds = testnet_seeds;
         fTestNet = true;
     }

@@ -140,7 +140,7 @@ BOOST_AUTO_TEST_CASE(rpc_rawsign) {
                           "abd8bcd4f122c6155b1b21027e940bb73ab8732bfdf7f9216ece"
                           "fca5b94d6df834e77e108f68e66f126044c052ae\"}]";
     r = CallRPC(std::string("createrawtransaction ") + prevout + " " +
-                "{\"3HqAe9LtNBjnsfM4CyYaWTnvCaUYT7v4oZ\":11}");
+                "{\"AQRA16uKrFpxzR17yidYtJDn2t287dc1XY\":11}");
     std::string notsigned = r.get_str();
     std::string privkey1 =
         "\"KzsXybp9jX64P5ekX1KUxRQ79Jht9uzW7LorgwE65i5rWACL6LQe\"";
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE(rpc_rawsign_missing_amount) {
                           "abd8bcd4f122c6155b1b21027e940bb73ab8732bfdf7f9216ece"
                           "fca5b94d6df834e77e108f68e66f126044c052ae\"}]";
     r = CallRPC(std::string("createrawtransaction ") + prevout + " " +
-                "{\"3HqAe9LtNBjnsfM4CyYaWTnvCaUYT7v4oZ\":11}");
+                "{\"AQRA16uKrFpxzR17yidYtJDn2t287dc1XY\":11}");
     std::string notsigned = r.get_str();
     std::string privkey1 =
         "\"KzsXybp9jX64P5ekX1KUxRQ79Jht9uzW7LorgwE65i5rWACL6LQe\"";

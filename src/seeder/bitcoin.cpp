@@ -13,7 +13,7 @@
 bool fTestNet;
 
 // The network magic to use.
-CMessageHeader::MessageMagic netMagic = {0xe3, 0xe1, 0xf3, 0xe8};
+CMessageHeader::MessageMagic netMagic = {0x44, 0x6d, 0x47, 0xe1};
 
 #define BITCOIN_SEED_NONCE 0x0539a019ca550825ULL
 
@@ -97,7 +97,7 @@ class CSeederNode {
         uint64_t nLocalNonce = BITCOIN_SEED_NONCE;
         int64_t nLocalServices = 0;
         CService myService;
-        CAddress me(myService, ServiceFlags(NODE_NETWORK | NODE_BITCOIN_CASH));
+        CAddress me(myService, ServiceFlags(NODE_NETWORK));
         BeginMessage("version");
         int nBestHeight = GetRequireHeight();
         std::string ver = "/bitcoin-cash-seeder:0.15/";
@@ -244,7 +244,7 @@ public:
     CSeederNode(const CService &ip, std::vector<CAddress> *vAddrIn)
         : vSend(SER_NETWORK, 0), vRecv(SER_NETWORK, 0), nHeaderStart(-1),
           nMessageStart(-1), nVersion(0), vAddr(vAddrIn), ban(0), doneAfter(0),
-          you(ip, ServiceFlags(NODE_NETWORK | NODE_BITCOIN_CASH)) {
+          you(ip, ServiceFlags(NODE_NETWORK)) {
         if (time(nullptr) > 1329696000) {
             vSend.SetVersion(209);
             vRecv.SetVersion(209);
