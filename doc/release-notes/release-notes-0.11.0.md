@@ -67,7 +67,7 @@ free transactions (with enough priority) will be accepted. It defaults to 15.
 Reducing this number reduces the speed at which the mempool can grow due
 to free transactions.
 
-For example, add the following to `bitcoin.conf`:
+For example, add the following to `bitcoincashplus.conf`:
 
     minrelaytxfee=0.00005 
     limitfreerelay=5

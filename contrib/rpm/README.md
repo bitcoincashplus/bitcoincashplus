@@ -19,11 +19,11 @@ reference the release tarball available from https://bitcoin.org/bin/ and
 `Source1` should reference the BerkeleyDB source.
 
 Sources 10-99 are for source files that are maintained in the
-[Bitcoin git repository](https://github.com/bitcoin/bitcoin) but are not part of
+[Bitcoin Cash Plus git repository](https://github.com/bitcoincashplus/bitcoincashplus) but are not part of
 the release tarball. Most of these will reside in the `contrib` sub-directory.
 
 Sources 10-19 should be reserved for miscellaneous configuration files.
-Currently only `Source10` is used, for the example `bitcoin.conf` file.
+Currently only `Source10` is used, for the example `bitcoincashplus.conf` file.
 
 Sources 20-29 should be reserved for man pages. Currently only `Source20`
 through `Source23` are used.

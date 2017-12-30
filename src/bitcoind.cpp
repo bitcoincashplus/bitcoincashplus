@@ -33,8 +33,8 @@
  * \section intro_sec Introduction
  *
  * This is the developer documentation of the reference client for an
- * experimental new digital currency called Bitcoin (https://www.bitcoin.org/),
- * which enables instant payments to anyone, anywhere in the world. Bitcoin uses
+ * experimental new digital currency called Bitcoin Cash Plus (https://www.bitcoincashplus.org/),
+ * which enables instant payments to anyone, anywhere in the world. Bitcoin Cash Plus uses
  * peer-to-peer technology to operate with no central authority: managing
  * transactions and issuing money are carried out collectively by the network.
  *
@@ -77,7 +77,7 @@ bool AppInit(int argc, char *argv[]) {
     //
     // Parameters
     //
-    // If Qt is used, parameters/bitcoin.conf are parsed in qt/bitcoin.cpp's
+    // If Qt is used, parameters/bitcoincashplus.conf are parsed in qt/bitcoin.cpp's
     // main()
     ParseParameters(argc, argv);
 
@@ -92,7 +92,7 @@ bool AppInit(int argc, char *argv[]) {
             strUsage += FormatParagraph(LicenseInfo());
         } else {
             strUsage += "\n" + _("Usage:") + "\n" +
-                        "  bitcoind [options]                     " +
+                        "  bcashplusd [options]                     " +
                         strprintf(_("Start %s Daemon"), _(PACKAGE_NAME)) + "\n";
 
             strUsage += "\n" + HelpMessage(HMM_BITCOIND);
@@ -133,11 +133,11 @@ bool AppInit(int argc, char *argv[]) {
 
         if (fCommandLine) {
             fprintf(stderr, "Error: There is no RPC client functionality in "
-                            "bitcoind anymore. Use the bitcoin-cli utility "
+                            "bcashplusd anymore. Use the bcashplus-cli utility "
                             "instead.\n");
             exit(EXIT_FAILURE);
         }
-        // -server defaults to true for bitcoind but not for the GUI so do this
+        // -server defaults to true for bcashplusd but not for the GUI so do this
         // here
         SoftSetBoolArg("-server", true);
         // Set this early so that parameter interactions go to console
@@ -160,7 +160,7 @@ bool AppInit(int argc, char *argv[]) {
         }
         if (GetBoolArg("-daemon", false)) {
 #if HAVE_DECL_DAEMON
-            fprintf(stdout, "Bitcoin server starting\n");
+            fprintf(stdout, "Bitcoin Cash Plus server starting\n");
 
             // Daemonize
             if (daemon(1, 0)) {
@@ -201,7 +201,7 @@ bool AppInit(int argc, char *argv[]) {
 int main(int argc, char *argv[]) {
     SetupEnvironment();
 
-    // Connect bitcoind signal handlers
+    // Connect bcashplusd signal handlers
     noui_connect();
 
     return (AppInit(argc, argv) ? EXIT_SUCCESS : EXIT_FAILURE);

@@ -52,7 +52,7 @@ void setupAmountWidget(QLineEdit *widget, QWidget *parent);
 
 QString bitcoinURIScheme(const CChainParams &, bool useCashAddr);
 QString bitcoinURIScheme(const Config &);
-// Parse "bitcoincash:" URI into recipient object, return true on successful
+// Parse "bitcoincashplus:" URI into recipient object, return true on successful
 // parsing
 bool parseBitcoinURI(const QString &scheme, const QUrl &uri,
                      SendCoinsRecipient *out);

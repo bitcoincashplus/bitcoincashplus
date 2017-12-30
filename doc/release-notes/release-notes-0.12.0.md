@@ -320,7 +320,7 @@ However, rescans as well as the RPCs `importwallet`, `importaddress`,
 `importprivkey` are disabled.
 
 To enable block pruning set `prune=<N>` on the command line or in
-`bitcoin.conf`, where `N` is the number of MiB to allot for
+`bitcoincashplus.conf`, where `N` is the number of MiB to allot for
 raw block & undo data.
 
 A value of 0 disables pruning. The minimal value above 0 is 550. Your
