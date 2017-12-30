@@ -623,12 +623,12 @@ TableViewLastColumnResizingFixer::TableViewLastColumnResizingFixer(
 static boost::filesystem::path StartupShortcutPath() {
     std::string chain = ChainNameFromCommandLine();
     if (chain == CBaseChainParams::MAIN)
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "Bitcoin.lnk";
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "BitcoinCashPlus.lnk";
     // Remove this special case when CBaseChainParams::TESTNET = "testnet4"
     if (chain == CBaseChainParams::TESTNET)
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "Bitcoin (testnet).lnk";
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "BitcoinCashPlus (testnet).lnk";
     return GetSpecialFolderPath(CSIDL_STARTUP) /
-           strprintf("Bitcoin (%s).lnk", chain);
+           strprintf("Bitcoin Cash Plus(%s).lnk", chain);
 }
 
 bool GetStartOnSystemStartup() {

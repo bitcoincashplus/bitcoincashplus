@@ -148,7 +148,7 @@ CBlock TestChain100Setup::CreateAndProcessBlock(
     IncrementExtraNonce(config, &block, chainActive.Tip(), extraNonce);
 
     while (!CheckProofOfWork(block.GetHash(), block.nBits, config)) {
-        ++block.nNonce;
+        block.nNonce = ArithToUint256(UintToArith256(block.nNonce) + 1);
     }
 
     std::shared_ptr<const CBlock> shared_pblock =

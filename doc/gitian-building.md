@@ -122,12 +122,12 @@ tail -f var/build.log
 
 Output from `gbuild` will look something like
 
-    Initialized empty Git repository in /home/vagrant/gitian-builder/inputs/bitcoin/.git/
+    Initialized empty Git repository in /home/vagrant/gitian-builder/inputs/bitcoincashplus/.git/
     remote: Counting objects: 57959, done.
     remote: Total 57959 (delta 0), reused 0 (delta 0), pack-reused 57958
     Receiving objects: 100% (57959/57959), 53.76 MiB | 484.00 KiB/s, done.
     Resolving deltas: 100% (41590/41590), done.
-    From https://github.com/bitcoin/bitcoin
+    From https://github.com/bitcoincashplus/bitcoincashplus
     ... (new tags, new branch etc)
     --- Building for trusty amd64 ---
     Stopping target if it is up
