@@ -50,8 +50,8 @@ static CBlock BuildBlockTestCase() {
     assert(!mutated);
 
     GlobalConfig config;
-    while (!CheckProofOfWork(block.GetHash(), block.nBits, config)) {
-        ++block.nNonce;
+    while (!CheckProofOfWork(block.GetHash(), block.nBits,config)) {
+        block.nNonce = ArithToUint256(UintToArith256(block.nNonce) + 1);
     }
 
     return block;
