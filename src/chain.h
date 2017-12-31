@@ -243,7 +243,6 @@ public:
         nStatus = 0;
         nSequenceId = 0;
         nTimeMax = 0;
-
         nVersion = 0;
         hashMerkleRoot = uint256();
         memset(nReserved, 0, sizeof(nReserved));

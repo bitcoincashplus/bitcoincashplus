@@ -236,7 +236,7 @@ def main():
 def run_tests(test_list, src_dir, build_dir, exeext, jobs=1, enable_coverage=False, args=[]):
     # Set env vars
     if "BITCOIND" not in os.environ:
-        os.environ["BITCOIND"] = build_dir + '/src/bitcoind' + exeext
+        os.environ["BITCOIND"] = build_dir + '/src/bcashplusd' + exeext
 
     tests_dir = src_dir + '/test/functional/'
     flags = ["--srcdir={}".format(src_dir)] + args

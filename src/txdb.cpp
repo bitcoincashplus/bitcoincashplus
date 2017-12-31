@@ -257,8 +257,10 @@ bool CBlockTreeDB::LoadBlockIndexGuts(
         pindexNew->nStatus = diskindex.nStatus;
         pindexNew->nTx = diskindex.nTx;
 
+        bool postfork = pindexNew->nHeight >= config.GetChainParams().GetConsensus().BCPHeight;
+
         if (!CheckProofOfWork(pindexNew->GetBlockHash(), pindexNew->nBits,
-                              config)) {
+                             postfork, config)) {
             return error("LoadBlockIndex(): CheckProofOfWork failed: %s",
                          pindexNew->ToString());
         }

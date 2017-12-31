@@ -27,9 +27,12 @@ uint256 CBlockHeader::GetHash(const Consensus::Params& params) const
     return writer.GetHash();
 }
 
-uint256 CBlockHeader::GetHash() const {
-    return SerializeHash(*this);
+uint256 CBlockHeader::GetHash() const
+{
+    const Consensus::Params& consensusParams = Params().GetConsensus();
+    return GetHash(consensusParams);
 }
+
 
 std::string CBlock::ToString() const
 {

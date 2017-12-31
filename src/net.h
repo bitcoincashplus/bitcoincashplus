@@ -566,9 +566,6 @@ public:
     const uint256 &GetMessageHash() const;
 
     void SetVersion(int nVersionIn) {
-    if (nVersionIn < BCP_HARD_FORK_VERSION){
-        nVersionIn |= SERIALIZE_BLOCK_LEGACY;
-    }
         hdrbuf.SetVersion(nVersionIn);
         vRecv.SetVersion(nVersionIn);
     }

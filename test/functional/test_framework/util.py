@@ -28,7 +28,7 @@ from . import coverage
 from .authproxy import AuthServiceProxy, JSONRPCException
 from .outputchecker import OutputChecker
 
-DEFAULT_BITCOIND = 'bitcoind'
+DEFAULT_BITCOIND = 'bcashplusd'
 COVERAGE_DIR = None
 
 logger = logging.getLogger("TestFramework.utils")
@@ -277,7 +277,7 @@ def initialize_chain(test_dir, num_nodes, cachedir):
         # Create cache directories, run bitcoinds:
         for i in range(MAX_NODES):
             datadir = initialize_datadir(cachedir, i)
-            args = [os.getenv("BITCOIND", "bitcoind"), "-server",
+            args = [os.getenv("BITCOIND", "bcashplusd"), "-server",
                     "-keypool=1", "-datadir=" + datadir, "-discover=0"]
             if i > 0:
                 args.append("-connect=127.0.0.1:" + str(p2p_port(0)))

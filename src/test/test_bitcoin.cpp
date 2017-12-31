@@ -147,7 +147,7 @@ CBlock TestChain100Setup::CreateAndProcessBlock(
     unsigned int extraNonce = 0;
     IncrementExtraNonce(config, &block, chainActive.Tip(), extraNonce);
 
-    while (!CheckProofOfWork(block.GetHash(), block.nBits, config)) {
+    while (!CheckProofOfWork(block.GetHash(), block.nBits,false, config)) {
         block.nNonce = ArithToUint256(UintToArith256(block.nNonce) + 1);
     }
 
