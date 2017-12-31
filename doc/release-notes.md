@@ -1,6 +1,6 @@
-Bitcoin Cash Plus version 0.16.2 is now available from:
+Bitcoin Cash Plus version 0.17.0 is now available from:
 
-  <https://download.bitcoincashplus.org/0.16.2/>
+  <https://download.bitcoincashplus.org/0.17.0/>
 
 This release includes the following features and fixes:
 
