@@ -7,8 +7,8 @@ User=bitcoin
 Group=bitcoin
 
 Type=forking
-PIDFile=/var/lib/bitcoind/bitcoincashplus.pid
-ExecStart=/usr/bin/bitcoind -daemon -pid=/var/lib/bitcoind/bitcoincashplus.pid \
+PIDFile=/var/lib/bitcoind/bcashplusd.pid
+ExecStart=/usr/bin/bitcoind -daemon -pid=/var/lib/bitcoind/bcashplusd.pid \
 -conf=/etc/bitcoin/bitcoincashplus.conf -datadir=/var/lib/bitcoind -disablewallet
 
 Restart=always
