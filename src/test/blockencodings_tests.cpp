@@ -50,7 +50,7 @@ static CBlock BuildBlockTestCase() {
     assert(!mutated);
 
     GlobalConfig config;
-    while (!CheckProofOfWork(block.GetHash(), block.nBits,config)) {
+    while (!CheckProofOfWork(block.GetHash(), block.nBits,false,config)) {
         block.nNonce = ArithToUint256(UintToArith256(block.nNonce) + 1);
     }
 
@@ -333,7 +333,7 @@ BOOST_AUTO_TEST_CASE(EmptyBlockRoundTripTest) {
     assert(!mutated);
 
     GlobalConfig config;
-    while (!CheckProofOfWork(block.GetHash(), block.nBits,config)) {
+    while (!CheckProofOfWork(block.GetHash(), block.nBits,false,config)) {
         block.nNonce = ArithToUint256(UintToArith256(block.nNonce) + 1);
     }
 

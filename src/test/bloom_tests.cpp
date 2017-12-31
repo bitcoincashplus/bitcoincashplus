@@ -364,7 +364,7 @@ BOOST_AUTO_TEST_CASE(merkle_block_1) {
             "fc8a00c96af966ffffffff02c0e1e400000000001976a9144134e75a6fcb604203"
             "4aab5e18570cf1f844f54788ac404b4c00000000001976a9142b6ba7c9d796b75e"
             "ef7942fc9288edd37c32f5c388ac00000000"),
-        SER_NETWORK, PROTOCOL_VERSION);
+        SER_NETWORK, PROTOCOL_VERSION| SERIALIZE_BLOCK_LEGACY);
     stream >> block;
 
     CBloomFilter filter(10, 0.000001, 0, BLOOM_UPDATE_ALL);
@@ -462,7 +462,7 @@ BOOST_AUTO_TEST_CASE(merkle_block_2) {
             "d2c875a390f67c1f6c94cfc617c0ea45afac00180d8f000000004341046a0765b5"
             "865641ce08dd39690aade26dfbf5511430ca428a3089261361cef170e3929a68ae"
             "e3d8d4848b0c5111b0a37b82b86ad559fd2a745b44d8e8d9dfdc0cac00000000"),
-        SER_NETWORK, PROTOCOL_VERSION);
+        SER_NETWORK, PROTOCOL_VERSION| SERIALIZE_BLOCK_LEGACY);
     stream >> block;
 
     CBloomFilter filter(10, 0.000001, 0, BLOOM_UPDATE_ALL);
@@ -576,7 +576,7 @@ BOOST_AUTO_TEST_CASE(merkle_block_2_with_update_none) {
             "d2c875a390f67c1f6c94cfc617c0ea45afac00180d8f000000004341046a0765b5"
             "865641ce08dd39690aade26dfbf5511430ca428a3089261361cef170e3929a68ae"
             "e3d8d4848b0c5111b0a37b82b86ad559fd2a745b44d8e8d9dfdc0cac00000000"),
-        SER_NETWORK, PROTOCOL_VERSION);
+        SER_NETWORK, PROTOCOL_VERSION| SERIALIZE_BLOCK_LEGACY);
     stream >> block;
 
     CBloomFilter filter(10, 0.000001, 0, BLOOM_UPDATE_NONE);
@@ -651,7 +651,7 @@ BOOST_AUTO_TEST_CASE(merkle_block_3_and_serialize) {
                  "1c3be876feaac0442a9f13c5a572742927af1dc623353ecf8c202225f6486"
                  "8137a18cdd85cbbb4c74fbccfd4f49639cf1bdc94a5672bb15ad5d4cac000"
                  "00000"),
-        SER_NETWORK, PROTOCOL_VERSION);
+        SER_NETWORK, PROTOCOL_VERSION| SERIALIZE_BLOCK_LEGACY);
     stream >> block;
 
     CBloomFilter filter(10, 0.000001, 0, BLOOM_UPDATE_ALL);
@@ -677,7 +677,7 @@ BOOST_AUTO_TEST_CASE(merkle_block_3_and_serialize) {
     for (unsigned int i = 0; i < vMatched.size(); i++)
         BOOST_CHECK(vMatched[i] == merkleBlock.vMatchedTxn[i].second);
 
-    CDataStream merkleStream(SER_NETWORK, PROTOCOL_VERSION);
+    CDataStream merkleStream(SER_NETWORK, PROTOCOL_VERSION| SERIALIZE_BLOCK_LEGACY);
     merkleStream << merkleBlock;
 
     std::vector<uint8_t> vch =
@@ -779,7 +779,7 @@ BOOST_AUTO_TEST_CASE(merkle_block_4) {
             "820edca9ef982c35fda2d255afba340068c5035552368bc7200c1488ffffffff01"
             "00093d00000000001976a9148edb68822f1ad580b043c7b3df2e400f8699eb4888"
             "ac00000000"),
-        SER_NETWORK, PROTOCOL_VERSION);
+        SER_NETWORK, PROTOCOL_VERSION| SERIALIZE_BLOCK_LEGACY);
     stream >> block;
 
     CBloomFilter filter(10, 0.000001, 0, BLOOM_UPDATE_ALL);
@@ -913,7 +913,7 @@ BOOST_AUTO_TEST_CASE(merkle_block_4_test_p2pubkey_only) {
             "820edca9ef982c35fda2d255afba340068c5035552368bc7200c1488ffffffff01"
             "00093d00000000001976a9148edb68822f1ad580b043c7b3df2e400f8699eb4888"
             "ac00000000"),
-        SER_NETWORK, PROTOCOL_VERSION);
+        SER_NETWORK, PROTOCOL_VERSION| SERIALIZE_BLOCK_LEGACY);
     stream >> block;
 
     CBloomFilter filter(10, 0.000001, 0, BLOOM_UPDATE_P2PUBKEY_ONLY);
@@ -1024,7 +1024,7 @@ BOOST_AUTO_TEST_CASE(merkle_block_4_test_update_none) {
             "820edca9ef982c35fda2d255afba340068c5035552368bc7200c1488ffffffff01"
             "00093d00000000001976a9148edb68822f1ad580b043c7b3df2e400f8699eb4888"
             "ac00000000"),
-        SER_NETWORK, PROTOCOL_VERSION);
+        SER_NETWORK, PROTOCOL_VERSION| SERIALIZE_BLOCK_LEGACY);
     stream >> block;
 
     CBloomFilter filter(10, 0.000001, 0, BLOOM_UPDATE_NONE);
