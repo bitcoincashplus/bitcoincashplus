@@ -29,6 +29,7 @@ static const int SERIALIZE_BLOCK_LEGACY = 0x04000000;
  */
 class CBlockHeader {
 public:
+    static const size_t HEADER_SIZE = 4+32+32+4+4+4;  // Excluding Equihash solution
     // header
     int32_t nVersion;
     uint256 hashPrevBlock;
@@ -69,7 +70,6 @@ public:
             nNonce = ArithToUint256(arith_uint256(legacy_nonce));
         }
 
-        READWRITE(nNonce);
     }
 
     void SetNull() {
@@ -80,7 +80,6 @@ public:
         memset(nReserved, 0, sizeof(nReserved));
         nTime = 0;
         nBits = 0;
-        nNonce.SetNull();
         nNonce.SetNull();
         nSolution.clear();
 

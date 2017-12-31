@@ -2051,8 +2051,10 @@ static bool ProcessMessage(const Config &config, CNode *pfrom,
         // will re-announce the new block via headers (or compact blocks again)
         // in the SendMessages logic.
         nodestate->pindexBestHeaderSent = pindex ? pindex : chainActive.Tip();
+        int legacyFlag = pfrom->IsLegacyBlockHeader(pfrom->GetSendVersion()) ? SERIALIZE_BLOCK_LEGACY : 0;
+
         connman.PushMessage(pfrom,
-                            msgMaker.Make(NetMsgType::HEADERS, vHeaders));
+                            msgMaker.Make(legacyFlag,NetMsgType::HEADERS, vHeaders));
     }
 
     else if (strCommand == NetMsgType::TX) {
@@ -2616,6 +2618,12 @@ static bool ProcessMessage(const Config &config, CNode *pfrom,
 
     // Ignore headers received while importing
     else if (strCommand == NetMsgType::HEADERS && !fImporting && !fReindex) {
+       // Deserialize in legacy format.
+       int legacyFlag = pfrom->IsLegacyBlockHeader(pfrom->GetRecvVersion()) ? SERIALIZE_BLOCK_LEGACY : 0;
+       int original_version = vRecv.GetVersion();
+        vRecv.SetVersion(original_version | legacyFlag);
+
+
         std::vector<CBlockHeader> headers;
 
         // Bypass the normal CBlock deserialization, as we don't want to risk
@@ -2632,6 +2640,7 @@ static bool ProcessMessage(const Config &config, CNode *pfrom,
             // Ignore tx count; assume it is 0.
             ReadCompactSize(vRecv);
         }
+        vRecv.SetVersion(original_version);
 
         if (nCount == 0) {
             // Nothing interesting. Stop asking this peers for more headers.
@@ -2812,8 +2821,13 @@ static bool ProcessMessage(const Config &config, CNode *pfrom,
     else if (strCommand == NetMsgType::BLOCK && !fImporting &&
              !fReindex) // Ignore blocks received while importing
     {
+        int legacyFlag = pfrom->IsLegacyBlockHeader(pfrom->GetRecvVersion()) ? SERIALIZE_BLOCK_LEGACY : 0;
+        int original_version = vRecv.GetVersion();
+        vRecv.SetVersion(original_version | legacyFlag);
+
         std::shared_ptr<CBlock> pblock = std::make_shared<CBlock>();
         vRecv >> *pblock;
+        vRecv.SetVersion(original_version);
 
         LogPrint("net", "received block %s peer=%d\n",
                  pblock->GetHash().ToString(), pfrom->id);

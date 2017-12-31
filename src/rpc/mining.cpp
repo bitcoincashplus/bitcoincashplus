@@ -154,7 +154,7 @@ static UniValue generateBlocks(const Config &config,
          if (pblock->nHeight < (uint32_t)params.GetConsensus().BCPHeight) {
              // Solve sha256d.
              while (nMaxTries > 0 && (int)pblock->nNonce.GetUint64(0) < nInnerLoopCount &&
-                    !CheckProofOfWork(pblock->GetHash(), pblock->nBits, config)) {
+                    !CheckProofOfWork(pblock->GetHash(), pblock->nBits, false,config)) {
                  pblock->nNonce = ArithToUint256(UintToArith256(pblock->nNonce) + 1);
                  --nMaxTries;
              }
@@ -188,7 +188,7 @@ static UniValue generateBlocks(const Config &config,
                  std::function<bool(std::vector<unsigned char>)> validBlock =
                          [&pblock](std::vector<unsigned char> soln) {
                      pblock->nSolution = soln;
-                     return CheckProofOfWork(pblock->GetHash(), pblock->nBits, Params().GetConsensus());
+                     return CheckProofOfWork(pblock->GetHash(), pblock->nBits,true, Params().GetConsensus());
                  };
                  bool found = EhBasicSolveUncancellable(n, k, curr_state, validBlock);
                  --nMaxTries;

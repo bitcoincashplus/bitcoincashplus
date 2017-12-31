@@ -1143,7 +1143,7 @@ bool ReadBlockFromDisk(CBlock &block, const CDiskBlockPos &pos,
 
 
     // Check the header
-    if (!CheckProofOfWork(block.GetHash(), block.nBits, config)) {
+    if (!CheckProofOfWork(block.GetHash(), block.nBits, postfork,config)) {
         return error("ReadBlockFromDisk: Errors in block header at %s",
                      pos.ToString());
     }
@@ -3202,7 +3202,7 @@ static bool CheckBlockHeader(const Config &config, const CBlockHeader &block,
     }
 
     // Check proof of work matches claimed amount
-    if (fCheckPOW && !CheckProofOfWork(block.GetHash(), block.nBits, config)) {
+    if (fCheckPOW && !CheckProofOfWork(block.GetHash(), block.nBits,postfork, config)) {
         return state.DoS(50, false, REJECT_INVALID, "high-hash", false,
                          "proof of work failed");
     }
