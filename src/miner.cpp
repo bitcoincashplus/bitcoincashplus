@@ -203,7 +203,8 @@ BlockAssembler::CreateNewBlock(const CScript &scriptPubKeyIn) {
     pblock->vtx[0] = MakeTransactionRef(coinbaseTx);
     pblocktemplate->vTxFees[0] = -1 * nFees;
 
-    int serFlags = (nHeight < chainparams.GetConsensus().BCPHeight) ?SERIALIZE_BLOCK_LEGACY : 0;
+    const Consensus::Params& params = chainparams.GetConsensus();
+    int serFlags = (nHeight < params.BCPHeight) ? SERIALIZE_BLOCK_LEGACY : 0;
 
     uint64_t nSerializeSize =
         GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION|serFlags);
@@ -211,16 +212,26 @@ BlockAssembler::CreateNewBlock(const CScript &scriptPubKeyIn) {
     LogPrintf("CreateNewBlock(): total size: %u txs: %u fees: %ld sigops %d\n",
               nSerializeSize, nBlockTx, nFees, nBlockSigOps);
 
+    arith_uint256 nonce;
+    if (nHeight >= chainparams.GetConsensus().BCPHeight) {
+        // Randomise nonce for new block foramt.
+        nonce = UintToArith256(GetRandHash());
+        // Clear the top and bottom 16 bits (for local use as thread flags and counters)
+        nonce <<= 32;
+        nonce >>= 16;
+    }
+
+
 
     // Fill in header.
     pblock->hashPrevBlock = pindexPrev->GetBlockHash();
+    pblock->nHeight        = pindexPrev->nHeight + 1;
+    memset(pblock->nReserved, 0, sizeof(pblock->nReserved));
     UpdateTime(pblock, *config, pindexPrev);
     pblock->nBits = GetNextWorkRequired(pindexPrev, pblock, *config);
-    pblock->nNonce = uint256();
-    pblock->nHeight        = pindexPrev->nHeight + 1;
+    pblock->nNonce    = ArithToUint256(nonce);
     pblock->nSolution.clear();
-    pblocktemplate->vTxSigOpsCount[0] =
-        GetSigOpCountWithoutP2SH(*pblock->vtx[0]);
+    pblocktemplate->vTxSigOpsCount[0] = GetSigOpCountWithoutP2SH(*pblock->vtx[0]);
 
     CValidationState state;
     if (!TestBlockValidity(*config, state, *pblock, pindexPrev, false, false)) {
