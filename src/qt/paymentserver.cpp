@@ -348,7 +348,7 @@ PaymentServer::PaymentServer(QObject *parent, bool startLocalServer)
     GOOGLE_PROTOBUF_VERIFY_VERSION;
 
     // Install global event filter to catch QFileOpenEvents
-    // on Mac: sent when you click bitcoincash: links
+    // on Mac: sent when you click bitcoincashplus: links
     // other OSes: helpful when dealing with payment request files
     if (parent) {
         parent->installEventFilter(this);
@@ -381,7 +381,7 @@ PaymentServer::~PaymentServer() {
 }
 
 //
-// OSX-specific way of handling bitcoincash: URIs and PaymentRequest mime types.
+// OSX-specific way of handling bitcoincashplus: URIs and PaymentRequest mime types.
 // Also used by paymentservertests.cpp and when opening a payment request file
 // via "Open URI..." menu entry.
 //
@@ -408,7 +408,7 @@ void PaymentServer::initNetManager() {
         delete netManager;
     }
 
-    // netManager is used to fetch paymentrequests given in bitcoincash: URIs
+    // netManager is used to fetch paymentrequests given in bitcoincashplus: URIs
     netManager = new QNetworkAccessManager(this);
 
     QNetworkProxy proxy;
@@ -502,13 +502,13 @@ void PaymentServer::handleURIOrFile(const QString &s) {
         return;
     }
 
-    // bitcoincash: CashAddr URI
+    // bitcoincashplus: CashAddr URI
     QString schemeCash = GUIUtil::bitcoinURIScheme(Params(), true);
     if (handleURI(schemeCash, s)) {
         return;
     }
 
-    // bitcoincash: Legacy URI
+    // bitcoincashplus: Legacy URI
     QString schemeLegacy = GUIUtil::bitcoinURIScheme(Params(), false);
     if (handleURI(schemeLegacy, s)) {
         return;

@@ -21,13 +21,13 @@ void URITests::uriTestsBase58() {
     QVERIFY(!GUIUtil::parseBitcoinURI(scheme, uri, &rv));
 
     uri.setUrl(
-        QString("bitcoincash:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?dontexist="));
+        QString("bitcoincashplus:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?dontexist="));
     QVERIFY(GUIUtil::parseBitcoinURI(scheme, uri, &rv));
     QVERIFY(rv.address == QString("175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W"));
     QVERIFY(rv.label == QString());
     QVERIFY(rv.amount == Amount(0));
 
-    uri.setUrl(QString("bitcoincash:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?label="
+    uri.setUrl(QString("bitcoincashplus:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?label="
                        "Wikipedia Example Address"));
     QVERIFY(GUIUtil::parseBitcoinURI(scheme, uri, &rv));
     QVERIFY(rv.address == QString("175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W"));
@@ -35,35 +35,35 @@ void URITests::uriTestsBase58() {
     QVERIFY(rv.amount == Amount(0));
 
     uri.setUrl(
-        QString("bitcoincash:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.001"));
+        QString("bitcoincashplus:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.001"));
     QVERIFY(GUIUtil::parseBitcoinURI(scheme, uri, &rv));
     QVERIFY(rv.address == QString("175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W"));
     QVERIFY(rv.label == QString());
     QVERIFY(rv.amount == Amount(100000));
 
     uri.setUrl(
-        QString("bitcoincash:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=1.001"));
+        QString("bitcoincashplus:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=1.001"));
     QVERIFY(GUIUtil::parseBitcoinURI(scheme, uri, &rv));
     QVERIFY(rv.address == QString("175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W"));
     QVERIFY(rv.label == QString());
     QVERIFY(rv.amount == Amount(100100000));
 
     uri.setUrl(
-        QString("bitcoincash:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=100&"
+        QString("bitcoincashplus:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=100&"
                 "label=Wikipedia Example"));
     QVERIFY(GUIUtil::parseBitcoinURI(scheme, uri, &rv));
     QVERIFY(rv.address == QString("175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W"));
     QVERIFY(rv.amount == Amount(10000000000LL));
     QVERIFY(rv.label == QString("Wikipedia Example"));
 
-    uri.setUrl(QString("bitcoincash:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?message="
+    uri.setUrl(QString("bitcoincashplus:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?message="
                        "Wikipedia Example Address"));
     QVERIFY(GUIUtil::parseBitcoinURI(scheme, uri, &rv));
     QVERIFY(rv.address == QString("175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W"));
     QVERIFY(rv.label == QString());
 
     QVERIFY(GUIUtil::parseBitcoinURI(scheme,
-                                     "bitcoincash://"
+                                     "bitcoincashplus://"
                                      "175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?"
                                      "message=Wikipedia Example Address",
                                      &rv));
@@ -71,17 +71,17 @@ void URITests::uriTestsBase58() {
     QVERIFY(rv.label == QString());
 
     uri.setUrl(
-        QString("bitcoincash:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?req-message="
+        QString("bitcoincashplus:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?req-message="
                 "Wikipedia Example Address"));
     QVERIFY(GUIUtil::parseBitcoinURI(scheme, uri, &rv));
 
     uri.setUrl(
-        QString("bitcoincash:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=1,"
+        QString("bitcoincashplus:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=1,"
                 "000&label=Wikipedia Example"));
     QVERIFY(!GUIUtil::parseBitcoinURI(scheme, uri, &rv));
 
     uri.setUrl(
-        QString("bitcoincash:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=1,"
+        QString("bitcoincashplus:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=1,"
                 "000.0&label=Wikipedia Example"));
     QVERIFY(!GUIUtil::parseBitcoinURI(scheme, uri, &rv));
 }
@@ -91,81 +91,81 @@ void URITests::uriTestsCashAddr() {
     QUrl uri;
     QString scheme =
         QString::fromStdString(Params(CBaseChainParams::MAIN).CashAddrPrefix());
-    uri.setUrl(QString("bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?"
+    uri.setUrl(QString("bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?"
                        "req-dontexist="));
     QVERIFY(!GUIUtil::parseBitcoinURI(scheme, uri, &rv));
 
     uri.setUrl(QString(
-        "bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?dontexist="));
+        "bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?dontexist="));
     QVERIFY(GUIUtil::parseBitcoinURI(scheme, uri, &rv));
     QVERIFY(rv.address ==
-            QString("bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a"));
+            QString("bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a"));
     QVERIFY(rv.label == QString());
     QVERIFY(rv.amount == Amount(0));
 
     uri.setUrl(
-        QString("bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?label="
+        QString("bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?label="
                 "Wikipedia Example Address"));
     QVERIFY(GUIUtil::parseBitcoinURI(scheme, uri, &rv));
     QVERIFY(rv.address ==
-            QString("bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a"));
+            QString("bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a"));
     QVERIFY(rv.label == QString("Wikipedia Example Address"));
     QVERIFY(rv.amount == Amount(0));
 
     uri.setUrl(QString(
-        "bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?amount=0.001"));
+        "bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?amount=0.001"));
     QVERIFY(GUIUtil::parseBitcoinURI(scheme, uri, &rv));
     QVERIFY(rv.address ==
-            QString("bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a"));
+            QString("bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a"));
     QVERIFY(rv.label == QString());
     QVERIFY(rv.amount == Amount(100000));
 
     uri.setUrl(QString(
-        "bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?amount=1.001"));
+        "bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?amount=1.001"));
     QVERIFY(GUIUtil::parseBitcoinURI(scheme, uri, &rv));
     QVERIFY(rv.address ==
-            QString("bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a"));
+            QString("bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a"));
     QVERIFY(rv.label == QString());
     QVERIFY(rv.amount == Amount(100100000));
 
     uri.setUrl(QString(
-        "bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?amount=100&"
+        "bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?amount=100&"
         "label=Wikipedia Example"));
     QVERIFY(GUIUtil::parseBitcoinURI(scheme, uri, &rv));
     QVERIFY(rv.address ==
-            QString("bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a"));
+            QString("bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a"));
     QVERIFY(rv.amount == Amount(10000000000LL));
     QVERIFY(rv.label == QString("Wikipedia Example"));
 
     uri.setUrl(QString(
-        "bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?message="
+        "bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?message="
         "Wikipedia Example Address"));
     QVERIFY(GUIUtil::parseBitcoinURI(scheme, uri, &rv));
     QVERIFY(rv.address ==
-            QString("bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a"));
+            QString("bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a"));
     QVERIFY(rv.label == QString());
 
     QVERIFY(GUIUtil::parseBitcoinURI(
-        scheme, "bitcoincash://"
+        scheme, "bitcoincashplus://"
                 "qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?"
                 "message=Wikipedia Example Address",
         &rv));
     QVERIFY(rv.address ==
-            QString("bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a"));
+            QString("bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a"));
     QVERIFY(rv.label == QString());
 
     uri.setUrl(QString(
-        "bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?req-message="
+        "bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?req-message="
         "Wikipedia Example Address"));
     QVERIFY(GUIUtil::parseBitcoinURI(scheme, uri, &rv));
 
     uri.setUrl(QString(
-        "bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?amount=1,"
+        "bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?amount=1,"
         "000&label=Wikipedia Example"));
     QVERIFY(!GUIUtil::parseBitcoinURI(scheme, uri, &rv));
 
     uri.setUrl(QString(
-        "bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?amount=1,"
+        "bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?amount=1,"
         "000.0&label=Wikipedia Example"));
     QVERIFY(!GUIUtil::parseBitcoinURI(scheme, uri, &rv));
 }
@@ -190,10 +190,10 @@ void URITests::uriTestFormatURI() {
     {
         UriTestConfig cfg(true);
         SendCoinsRecipient r;
-        r.address = "bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a";
+        r.address = "bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a";
         r.message = "test";
         QString uri = GUIUtil::formatBitcoinURI(cfg, r);
-        QVERIFY(uri == "bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?"
+        QVERIFY(uri == "bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a?"
                        "message=test");
     }
 
@@ -204,7 +204,7 @@ void URITests::uriTestFormatURI() {
         r.message = "test";
         QString uri = GUIUtil::formatBitcoinURI(cfg, r);
         QVERIFY(uri ==
-                "bitcoincash:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?message=test");
+                "bitcoincashplus:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?message=test");
     }
 }
 
