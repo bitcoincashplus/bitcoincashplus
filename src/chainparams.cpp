@@ -109,7 +109,7 @@ public:
         consensus.powLimit = uint256S("0007ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.powLimitStart = uint256S("0000000fffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.powLimitLegacy = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-
+        consensus.BCPremineEnforceWhitelist=true;
         consensus.nPowAveragingWindow = 30;
         assert(maxUint/UintToArith256(consensus.powLimit) >= consensus.nPowAveragingWindow);
         consensus.nPowMaxAdjustDown = 32;
@@ -233,6 +233,7 @@ public:
 
         consensus.BCPHeight = 1310320;
         consensus.BCPPremineWindow = 50;
+        consensus.BCPremineEnforceWhitelist=false;
 
         consensus.antiReplayOpReturnSunsetHeight = 1250000;
         consensus.antiReplayOpReturnCommitment = GetAntiReplayCommitment();
@@ -349,6 +350,7 @@ public:
         consensus.BCPPremineWindow = 200;
         consensus.antiReplayOpReturnSunsetHeight = 530000;
         consensus.antiReplayOpReturnCommitment = GetAntiReplayCommitment();
+        consensus.BCPremineEnforceWhitelist=false;
 
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.powLimitStart = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
