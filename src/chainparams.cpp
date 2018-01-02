@@ -185,6 +185,7 @@ public:
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
         fMineBlocksOnDemand = false;
+        fMiningRequiresPeers=true;
         cashaddrPrefix = "bitcoincashplus";
 
         checkpointData = (CCheckpointData) {
@@ -311,6 +312,7 @@ public:
         fDefaultConsistencyChecks = false;
         fRequireStandard = false;
         fMineBlocksOnDemand = false;
+        fMiningRequiresPeers=true;
         cashaddrPrefix = "bcptest";
 
 
@@ -342,8 +344,9 @@ public:
         consensus.BIP34Hash = uint256();
         consensus.BIP65Height = 1351; // BIP65 activated on regtest (Used in rpc activation tests)
         consensus.BIP66Height = 1251; // BIP66 activated on regtest (Used in rpc activation tests)
-        consensus.BCPHeight = 3000;
-        consensus.BCPPremineWindow = 10;
+        // Hard fork is always enabled on regtest.
+        consensus.BCPHeight = 0;
+        consensus.BCPPremineWindow = 200;
         consensus.antiReplayOpReturnSunsetHeight = 530000;
         consensus.antiReplayOpReturnCommitment = GetAntiReplayCommitment();
 
