@@ -346,8 +346,8 @@ public:
         consensus.BIP65Height = 1351; // BIP65 activated on regtest (Used in rpc activation tests)
         consensus.BIP66Height = 1251; // BIP66 activated on regtest (Used in rpc activation tests)
         // Hard fork is always enabled on regtest.
-        consensus.BCPHeight = 0;
-        consensus.BCPPremineWindow = 200;
+        consensus.BCPHeight = 3000;
+        consensus.BCPPremineWindow = 20;
         consensus.antiReplayOpReturnSunsetHeight = 530000;
         consensus.antiReplayOpReturnCommitment = GetAntiReplayCommitment();
         consensus.BCPremineEnforceWhitelist=false;
