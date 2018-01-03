@@ -3,23 +3,21 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-# Exercise the Bitcoin Cash Plus RPC calls.
 
 import time
 import random
 import re
 from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import *
-from test_framework.mininode import NODE_BITCOIN_CASH
 from test_framework.cdefs import (ONE_MEGABYTE,
                                   LEGACY_MAX_BLOCK_SIZE,
                                   DEFAULT_MAX_BLOCK_SIZE)
 
 
-class ABC_RPC_Test (BitcoinTestFramework):
+class BCP_RPC_Test (BitcoinTestFramework):
 
     def __init__(self):
-        super(ABC_RPC_Test, self).__init__()
+        super(BCP_RPC_Test, self).__init__()
         self.num_nodes = 1
         self.tip = None
         self.setup_clean_chain = True
@@ -80,33 +78,13 @@ class ABC_RPC_Test (BitcoinTestFramework):
         ebs = getsize['excessiveBlockSize']
         assert_equal(ebs, 13.14 * ONE_MEGABYTE)
         # check for EB correctness in the subver string
-        self.check_subversion("/# Bitcoin CashPlus
+        self.check_subversion("/Bitcoin Cash Plus:.*\(EB13\.1; .*\)/")
 
-                                [![Build Status](https://travis-ci.org/bitcoincashplus/bitcoincashplus.svg?branch=master)](https://travis-ci.org/bitcoincashplus/bitcoincashplus)
-
-                                Bitcoin Cash Plus is a fork of the Bitcoin blockchain that will occur at block height 510000, at roughly 12:00:00 UTC December 2nd 2018.
-
-                                At the predetermined block height, Bitcoin Cash Plus miners will begin creating blocks with a new proof-of-work algorithm, and this will cause a bifurcation of the Bitcoin blockchain. The original Bitcoin blockchain will continue on unaltered, but a new branch of the blockchain will split off from the original chain. The new branch is a distinct blockchain with the same transaction history as Bitcoin up until the fork, but then diverges from it. As a result of this process, a new cryptocurrency will be born.
-
-                                ## Links
-                                https://t.co/g3trObTJgC
-                                * Website: http://bitcoincashplus.org
-                                * Slack: [invitation](https://slackpass.io/bitcoincashplus)
-Bitcoin Cash Plus:.*\(EB13\.1; .*\)/")
-
-/*    def test_cashservicebit(self):
-        # Check that NODE_BITCOIN_CASH bit is set.
-        # This can be seen in the 'localservices' entry of getnetworkinfo RPC.
-        node = self.nodes[0]
-        nw_info = node.getnetworkinfo()
-        assert_equal(int(nw_info['localservices'], 16) & NODE_BITCOIN_CASH,
-  */                   NODE_BITCOIN_CASH)
 
     def run_test(self):
         self.genesis_hash = int(self.nodes[0].getbestblockhash(), 16)
         self.test_excessiveblock()
-        self.test_cashservicebit()
 
 
 if __name__ == '__main__':
-    ABC_RPC_Test().main()
+    BCP_RPC_Test().main()

@@ -42,7 +42,7 @@ BASE_SCRIPTS = [
     # vv Tests less than 5m vv
     'p2p-fullblocktest.py',
     'fundrawtransaction.py',
-    'p2p-compactblocks.py',
+    # 'p2p-compactblocks.py',
     # vv Tests less than 2m vv
     'wallet.py',
     'wallet-accounts.py',
@@ -90,10 +90,12 @@ BASE_SCRIPTS = [
     'rpcnamedargs.py',
     'listsinceblock.py',
     'p2p-leaktests.py',
-    'abc-cmdline.py',
-    'abc-p2p-fullblocktest.py',
-    'abc-rpc.py',
+    'bcp-cmdline.py',
+    'bcp-p2p-fullblocktest.py',
+    'bcp-rpc.py',
     'mempool-accept-txn.py',
+    'bcp_hardfork.py',
+
 ]
 
 ZMQ_SCRIPTS = [

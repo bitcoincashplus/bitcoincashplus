@@ -783,7 +783,7 @@ class CScript(bytes):
         # need to change
         def _repr(o):
             if isinstance(o, bytes):
-                return b"x('%s')" % hexlify(o).decode('ascii')
+                 return (b"x('%s')" % hexlify(o)).decode('ascii')
             else:
                 return repr(o)
 
@@ -858,6 +858,8 @@ def SignatureHash(script, txTo, inIdx, hashtype):
     Returns (hash, err) to precisely match the consensus-critical behavior of
     the SIGHASH_SINGLE bug. (inIdx is *not* checked for validity)
     """
+    assert not (hashtype & SIGHASH_FORKID), "BIP143 is mandatory for FORKID enabled transactions."
+
     HASH_ONE = b'\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 
     if inIdx >= len(txTo.vin):
@@ -932,6 +934,7 @@ def SignatureHashForkId(script, txTo, inIdx, hashtype, amount):
     elif ((hashtype & 0x1f) == SIGHASH_SINGLE and inIdx < len(txTo.vout)):
         serialize_outputs = txTo.vout[inIdx].serialize()
         hashOutputs = uint256_from_str(hash256(serialize_outputs))
+
 
     ss = bytes()
     ss += struct.pack("<i", txTo.nVersion)

@@ -5,7 +5,7 @@ Bitcoin Cash Plus version 0.15.0 is now available from:
 This release includes the following features and fixes:
 
 - Reserve block space for high priority transactions (D485)
-- Use "bitcoincash:" URI (D466)
+- Use "bitcoincashplus:" URI (D466)
 - Add and accept Bitcoin Cash networking magic (D400)
 - Peer preferentially with NODE_CASH nodes (D457)
 - Hardcoded seeds update (D403)

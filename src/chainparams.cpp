@@ -109,12 +109,12 @@ public:
         consensus.powLimit = uint256S("0007ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.powLimitStart = uint256S("0000000fffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.powLimitLegacy = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-
+        consensus.BCPremineEnforceWhitelist=true;
         consensus.nPowAveragingWindow = 30;
         assert(maxUint/UintToArith256(consensus.powLimit) >= consensus.nPowAveragingWindow);
         consensus.nPowMaxAdjustDown = 32;
         consensus.nPowMaxAdjustUp = 16;
-        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60;; // 10 minutes
+        consensus.nPowTargetTimespanLegacy = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
@@ -175,8 +175,9 @@ public:
             pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,28);  // prefix: C
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,23);  // prefix: A
+
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<uint8_t>(1, 28);
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<uint8_t>(1, 23);
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,128);
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
@@ -184,6 +185,7 @@ public:
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
         fMineBlocksOnDemand = false;
+        fMiningRequiresPeers=true;
         cashaddrPrefix = "bitcoincashplus";
 
         checkpointData = (CCheckpointData) {
@@ -231,6 +233,7 @@ public:
 
         consensus.BCPHeight = 1310320;
         consensus.BCPPremineWindow = 50;
+        consensus.BCPremineEnforceWhitelist=false;
 
         consensus.antiReplayOpReturnSunsetHeight = 1250000;
         consensus.antiReplayOpReturnCommitment = GetAntiReplayCommitment();
@@ -310,6 +313,7 @@ public:
         fDefaultConsistencyChecks = false;
         fRequireStandard = false;
         fMineBlocksOnDemand = false;
+        fMiningRequiresPeers=true;
         cashaddrPrefix = "bcptest";
 
 
@@ -337,14 +341,16 @@ public:
     CRegTestParams() {
         strNetworkID = "regtest";
         consensus.nSubsidyHalvingInterval = 150;
-        consensus.BIP34Height = 10000; // BIP34 has not activated on regtest (far in the future so block v1 are not rejected in tests)
+        consensus.BIP34Height = 100000000; // BIP34 has not activated on regtest (far in the future so block v1 are not rejected in tests)
         consensus.BIP34Hash = uint256();
         consensus.BIP65Height = 1351; // BIP65 activated on regtest (Used in rpc activation tests)
         consensus.BIP66Height = 1251; // BIP66 activated on regtest (Used in rpc activation tests)
+        // Hard fork is always enabled on regtest.
         consensus.BCPHeight = 3000;
-        consensus.BCPPremineWindow = 10;
+        consensus.BCPPremineWindow = 20;
         consensus.antiReplayOpReturnSunsetHeight = 530000;
         consensus.antiReplayOpReturnCommitment = GetAntiReplayCommitment();
+        consensus.BCPremineEnforceWhitelist=false;
 
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.powLimitStart = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
@@ -352,7 +358,7 @@ public:
         consensus.nPowAveragingWindow = 30;
         consensus.nPowMaxAdjustDown = 16;
         consensus.nPowMaxAdjustUp = 32;
-        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
+        consensus.nPowTargetTimespanLegacy = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = true;
@@ -398,7 +404,7 @@ public:
 
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.
 
-         fMiningRequiresPeers = false;
+        fMiningRequiresPeers = false;
         fDefaultConsistencyChecks = true;
         fRequireStandard = false;
         fMineBlocksOnDemand = true;

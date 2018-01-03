@@ -1136,7 +1136,7 @@ bool ReadBlockFromDisk(CBlock &block, const CDiskBlockPos &pos,
                      e.what(), pos.ToString());
     }
   // Check Equihash solution
-    bool postfork = block.nHeight >= (uint32_t)config.GetChainParams().GetConsensus().BCPHeight;
+    bool postfork = IsBCPEnabled(config,block.nHeight);
     if (postfork && !CheckEquihashSolution(&block, config)) {
         return error("ReadBlockFromDisk: Errors in block header at %s (bad Equihash solution)", pos.ToString());
     }
@@ -1830,20 +1830,20 @@ static uint32_t GetBlockScriptFlags(const CBlockIndex *pindex,
         flags |= SCRIPT_VERIFY_CHECKSEQUENCEVERIFY;
     }
 
+
     // If the BCP is enabled, we start accepting replay protected txns
     //we start rejecting transaction that use a high
     // s in their signature. We also make sure that signature that are supposed
     // to fail (for instance in multisig or other forms of smart contracts) are
     // null.
-    if (IsBCPEnabled(config, pindex->pprev)) {
+
+   // if (IsBCPEnabled(config, pindex->pprev)) {
         flags |= SCRIPT_VERIFY_STRICTENC;
         flags |= SCRIPT_ENABLE_SIGHASH_FORKID;
         flags |= SCRIPT_VERIFY_LOW_S;
         flags |= SCRIPT_VERIFY_NULLFAIL;
-    }
-
-
-    return flags;
+    //}
+     return flags;
 }
 
 static int64_t nTimeCheck = 0;
@@ -3194,7 +3194,7 @@ static bool CheckBlockHeader(const Config &config, const CBlockHeader &block,
                              CValidationState &state, bool fCheckPOW = true) {
 
   // Check Equihash solution is valid
-    bool postfork = block.nHeight >= (uint32_t)config.GetChainParams().GetConsensus().BCPHeight;
+    bool postfork = IsBCPEnabled(config,block.nHeight);
     if (fCheckPOW && postfork && !CheckEquihashSolution(&block, config)) {
         LogPrintf("CheckBlockHeader(): Equihash solution invalid at height %d\n", block.nHeight);
         return state.DoS(100, error("CheckBlockHeader(): Equihash solution invalid"),
@@ -3255,7 +3255,7 @@ bool CheckBlock(const Config &config, const CBlock &block,
     // Size limits.
      int serialization_flags=0;
 
-    if (block.nHeight < (uint32_t)config.GetChainParams().GetConsensus().BCPHeight) {
+    if (!IsBCPEnabled(config,block.nHeight)) {
         serialization_flags |= SERIALIZE_BLOCK_LEGACY;
     }
     auto nMaxBlockSize = config.GetMaxBlockSize();
@@ -3369,7 +3369,7 @@ static bool ContextualCheckBlockHeader(const Config &config,
 
 
     // Check block height for blocks after BCP fork.
-    if (nHeight >= consensusParams.BCPHeight && block.nHeight !=(uint32_t)nHeight){
+    if (IsBCPEnabled(config,nHeight) && block.nHeight !=(uint32_t)nHeight){
         return state.Invalid(false, REJECT_INVALID, "bad-height", "incorrect block height");
     }
 
@@ -3391,8 +3391,7 @@ static bool ContextualCheckBlockHeader(const Config &config,
     // check for version 2, 3 and 4 upgrades
     if ((block.nVersion < 2 && nHeight >= consensusParams.BIP34Height) ||
         (block.nVersion < 3 && nHeight >= consensusParams.BIP66Height) ||
-        (block.nVersion < 4 && nHeight >= consensusParams.BIP65Height)||
-          (block.nVersion < VERSIONBITS_TOP_BITS && nHeight >= consensusParams.BCPHeight)){
+        (block.nVersion < 4 && nHeight >= consensusParams.BIP65Height)){
                 return state.Invalid(
                     false, REJECT_OBSOLETE,
                     strprintf("bad-version(0x%08x)", block.nVersion),
@@ -3500,6 +3499,24 @@ bool ContextualCheckBlock(const Config &config, const CBlock &block,
                         block.vtx[0]->vin[0].scriptSig.begin())) {
             return state.DoS(100, false, REJECT_INVALID, "bad-cb-height", false,
                              "block height mismatch in coinbase");
+        }
+    }
+
+   if (IsBCPEnabled(config,nHeight) &&
+        nHeight < consensusParams.BCPHeight + consensusParams.BCPPremineWindow &&
+        consensusParams.BCPremineEnforceWhitelist)
+    {
+        if (block.vtx[0]->vout.size() != 1) {
+            return state.DoS(
+                100, error("%s: only one coinbase output is allowed",__func__),
+                REJECT_INVALID, "bad-premine-coinbase-output");
+        }
+        const CTxOut& output = block.vtx[0]->vout[0];
+        bool valid =true;//consensusParams.IsPremineAddressScript(output.scriptPubKey, (uint32_t)nHeight);
+        if (!valid) {
+            return state.DoS(
+                100, error("%s: not in premine whitelist", __func__),
+                REJECT_INVALID, "bad-premine-coinbase-scriptpubkey");
         }
     }
 

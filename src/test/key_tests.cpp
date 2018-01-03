@@ -17,20 +17,16 @@
 
 #include <boost/test/unit_test.hpp>
 
-static const std::string strSecret1 =
-    "5KYQiGYccVRqhwYYuM6xVFo3kiq88Rwq7NtxSy7ifwoJ4NrUUXk";
-static const std::string strSecret2 =
-    "5JckJLFBbDj1HSdQg5ZCQyKTK2fkD1BG6JDdKLVxWAh5vmWPify";
-static const std::string strSecret1C =
-    "Kxj9wHmkvxvQN8EhW9YWyA9frFg8pLaUoCYDjvGteJ98YEFz3pdh";
-static const std::string strSecret2C =
-    "KwDrrotMRBKT6F28f1ArUpF334MCiJkpxYP6WNYVmYdMoJqjogwf";
-static const std::string addr1 =  "CGXfqNfxqRCvcYjX4qLiLpmLwgg6K6uD1G";
-static const std::string addr2 =  "CGXn5hMEVD3GpCrkvpsvSkk5fqoKWmogyn";
-static const std::string addr1C = "CGbEsaWBheWn7LR5TSMFTYiGQrypLws8Kf";
-static const std::string addr2C = "CGbFtZEXKAVjoJmBefN7nMNYD7FuwUQ6pP";
+static const std::string strSecret1     ("5HxWvvfubhXpYYpS3tJkw6fq9jE9j18THftkZjHHfmFiWtmAbrj");
+static const std::string strSecret2     ("5KC4ejrDjv152FGwP386VD1i2NYc5KkfSMyv1nGy1VGDxGHqVY3");
+static const std::string strSecret1C    ("Kwr371tjA9u2rFSMZjTNun2PXXP3WPZu2afRHTcta6KxEUdm1vEw");
+static const std::string strSecret2C    ("L3Hq7a8FEQwJkW1M2GNKDW28546Vp5miewcCzSqUD9kCAXrJdS3g");
+static const std::string addr1 ("CfijQPpGx8Y1wXCezKDVtiVSPrYs1TqKcS");
+static const std::string addr2 ("CWYreGRKEf45tmDJru2G9zG5fPSN7JN6T1");
+static const std::string addr1C("CeGCRrDwqS9rZLCKzGmys6FLUede24ZV4o");
+static const std::string addr2C("CTtcbLKQtFW3tR4x2ADdqrbiJVfZQD9cFm");
 
-static const std::string strAddressBad = "1GXfqNfxqRCvcYjX4qLiLpmLwgg6K6uD1G";
+static const std::string strAddressBad("CKhavDqXogc5u6bEBFjnyxWoUWtQudxmNf");
 
 #ifdef KEY_TESTS_DUMPINFO
 void dumpKeyInfo(uint256 privkey) {
