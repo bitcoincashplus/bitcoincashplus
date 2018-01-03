@@ -260,7 +260,7 @@ uint32_t GetNextCashPlusWorkRequired(const CBlockIndex *pindexPrev,
     if (params.fPowAllowMinDifficultyBlocks &&
         (pblock->GetBlockTime() >
          pindexPrev->GetBlockTime() + 2 * params.nPowTargetSpacing)) {
-        return UintToArith256(params.PowLimit(false)).GetCompact();
+        return UintToArith256(params.PowLimit(true)).GetCompact();
     }
 
     // Compute the difficulty based on the full adjustment interval.
@@ -281,7 +281,7 @@ uint32_t GetNextCashPlusWorkRequired(const CBlockIndex *pindexPrev,
     const arith_uint256 nextTarget =
         ComputeTarget(pindexFirst, pindexLast, params);
 
-    const arith_uint256 powLimit = UintToArith256(params.PowLimit(false));
+    const arith_uint256 powLimit = UintToArith256(params.PowLimit(true));
     if (nextTarget > powLimit) {
         return powLimit.GetCompact();
     }
