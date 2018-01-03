@@ -199,7 +199,7 @@ BOOST_AUTO_TEST_CASE(test_userAgentLength) {
                       "very very very very very very very very very very very "
                       "very very very very very very very very very very very "
                       "very very very very very very very very very very very "
-                      "very very very very very very very ve)/");
+                      "very very very very very very v)/");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
