@@ -833,7 +833,6 @@ SIGHASH_NONE = 2
 SIGHASH_SINGLE = 3
 SIGHASH_FORKID = 0x40
 SIGHASH_ANYONECANPAY = 0x80
-FORKID_BCP = 79 # Atomic number AU
 
 def FindAndDelete(script, sig):
     """Consensus critical, see FindAndDelete() in Satoshi codebase"""

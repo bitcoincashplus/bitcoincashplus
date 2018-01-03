@@ -39,7 +39,7 @@ import copy
 from test_framework.siphash import siphash256
 from test_framework.cdefs import MAX_BLOCK_SIGOPS_PER_MB
 
-BCP_REGTEST_HARDFORK_HEIGHT = 2000
+BCP_REGTEST_HARDFORK_HEIGHT = 3000
 
 BIP0031_VERSION = 60000
 MY_VERSION = 70014  # past bip-31 for ping/pong
