@@ -21,10 +21,10 @@ MAX_GENERATED_BLOCK_SIZE_ERROR = (
     'Max generated block size (blockmaxsize) cannot exceed the excessive block size (excessiveblocksize)')
 
 
-class ABC_CmdLine_Test (BitcoinTestFramework):
+class BCP_CmdLine_Test (BitcoinTestFramework):
 
     def __init__(self):
-        super(ABC_CmdLine_Test, self).__init__()
+        super(BCP_CmdLine_Test, self).__init__()
         self.num_nodes = 1
         self.setup_clean_chain = False
 
@@ -101,4 +101,4 @@ class ABC_CmdLine_Test (BitcoinTestFramework):
 
 
 if __name__ == '__main__':
-    ABC_CmdLine_Test().main()
+    BCP_CmdLine_Test().main()
