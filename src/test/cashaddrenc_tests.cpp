@@ -268,30 +268,18 @@ BOOST_AUTO_TEST_CASE(check_size) {
 BOOST_AUTO_TEST_CASE(test_addresses) {
     const CChainParams params = Params(CBaseChainParams::MAIN);
 
-    std::vector<std::vector<uint8_t>> hash{
-        {118, 160, 64,  83, 189, 160, 168, 139, 218, 81,
-         119, 184, 106, 21, 195, 178, 159, 85,  152, 115},
-        {203, 72, 18, 50, 41,  156, 213, 116, 49,  81,
-         172, 75, 45, 99, 174, 25,  142, 123, 176, 169},
-        {1,   31, 40,  228, 115, 201, 95, 64,  19,  215,
-         213, 62, 197, 251, 195, 180, 45, 248, 237, 16}};
+    std::vector<uint8_t> hash = {0, 17, 128, 5, 246, 174, 201,
+                                  130, 217, 236, 131, 136, 199,148,
+                                  26, 202, 163, 58, 140, 221};
 
-    std::vector<std::string> pubkey = {
-        "bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a",
-        "bitcoincash:qr95sy3j9xwd2ap32xkykttr4cvcu7as4y0qverfuy",
-        "bitcoincash:qqq3728yw0y47sqn6l2na30mcw6zm78dzqre909m2r"};
-    std::vector<std::string> script = {
-        "bitcoincash:ppm2qsznhks23z7629mms6s4cwef74vcwvn0h829pq",
-        "bitcoincash:pr95sy3j9xwd2ap32xkykttr4cvcu7as4yc93ky28e",
-        "bitcoincash:pqq3728yw0y47sqn6l2na30mcw6zm78dzq5ucqzc37"};
+    std::string pubkey = "bitcoincashplus:qqqprqq976hvnqkeajpc33u5rt92xw5vm5ylgfku0f";
 
-    for (size_t i = 0; i < hash.size(); ++i) {
-        const CTxDestination dstKey = CKeyID(uint160(hash[i]));
-        BOOST_CHECK_EQUAL(pubkey[i], EncodeCashAddr(dstKey, params));
+    std::string script = "bitcoincashplus:pqqprqq976hvnqkeajpc33u5rt92xw5vm5n64x3l55";
 
-        const CTxDestination dstScript = CScriptID(uint160(hash[i]));
-        BOOST_CHECK_EQUAL(script[i], EncodeCashAddr(dstScript, params));
-    }
+    const CTxDestination dstKey = CKeyID(uint160(hash));
+    BOOST_CHECK_EQUAL(pubkey, EncodeCashAddr(dstKey, params));
+
+    const CTxDestination dstScript = CScriptID(uint160(hash));
+    BOOST_CHECK_EQUAL(script, EncodeCashAddr(dstScript, params));
 }
-
 BOOST_AUTO_TEST_SUITE_END()
