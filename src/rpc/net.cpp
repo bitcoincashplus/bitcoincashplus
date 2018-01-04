@@ -236,8 +236,8 @@ static UniValue addnode(const Config &config, const JSONRPCRequest &request) {
             "list, 'remove' to remove a node from the list, 'onetry' to try a "
             "connection to the node once\n"
             "\nExamples:\n" +
-            HelpExampleCli("addnode", "\"192.168.0.6:8333\" \"onetry\"") +
-            HelpExampleRpc("addnode", "\"192.168.0.6:8333\", \"onetry\""));
+            HelpExampleCli("addnode", "\"192.168.0.6:8337\" \"onetry\"") +
+            HelpExampleRpc("addnode", "\"192.168.0.6:8337\", \"onetry\""));
 
     if (!g_connman)
         throw JSONRPCError(
@@ -282,9 +282,9 @@ static UniValue disconnectnode(const Config &config,
             "2. \"nodeid\"      (number, optional) The node ID (see "
             "getpeerinfo for node IDs)\n"
             "\nExamples:\n" +
-            HelpExampleCli("disconnectnode", "\"192.168.0.6:8333\"") +
+            HelpExampleCli("disconnectnode", "\"192.168.0.6:8337\"") +
             HelpExampleCli("disconnectnode", "\"\" 1") +
-            HelpExampleRpc("disconnectnode", "\"192.168.0.6:8333\"") +
+            HelpExampleRpc("disconnectnode", "\"192.168.0.6:8337\"") +
             HelpExampleRpc("disconnectnode", "\"\", 1"));
     }
 
@@ -342,7 +342,7 @@ static UniValue getaddednodeinfo(const Config &config,
             "    \"addresses\" : [                    (list of objects) Only "
             "when connected = true\n"
             "       {\n"
-            "         \"address\" : \"192.168.0.201:8333\",  (string) The "
+            "         \"address\" : \"192.168.0.201:8337\",  (string) The "
             "bitcoin server IP and port we're connected to\n"
             "         \"connected\" : \"outbound\"           (string) "
             "connection, inbound or outbound\n"

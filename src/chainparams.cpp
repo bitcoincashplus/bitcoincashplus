@@ -281,7 +281,7 @@ public:
 
 
 
-        nDefaultPort = 18333;
+        nDefaultPort = 18337;
         nPruneAfterHeight = 1000;
 
         const size_t N = 200, K = 9;
