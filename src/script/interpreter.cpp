@@ -193,6 +193,7 @@ static uint32_t GetHashType(const valtype &vchSig) {
     return vchSig[vchSig.size() - 1];
 }
 
+
 static void CleanupScriptCode(CScript &scriptCode,
                               const std::vector<uint8_t> &vchSig,
                               uint32_t flags) {
@@ -238,12 +239,14 @@ bool CheckSignatureEncoding(const std::vector<uint8_t> &vchSig, uint32_t flags,
         if (!IsDefinedHashtypeSignature(vchSig)) {
             return set_error(serror, SCRIPT_ERR_SIG_HASHTYPE);
         }
+
+        bool requiresForkId= !(flags & SCRIPT_ALLOW_NON_FORKID);
         bool usesForkId = GetHashType(vchSig) & SIGHASH_FORKID;
         bool forkIdEnabled = flags & SCRIPT_ENABLE_SIGHASH_FORKID;
-        if (!forkIdEnabled && usesForkId) {
+        if (!forkIdEnabled && usesForkId && requiresForkId) {
             return set_error(serror, SCRIPT_ERR_ILLEGAL_FORKID);
         }
-        if (forkIdEnabled && !usesForkId) {
+        if (forkIdEnabled && !usesForkId && requiresForkId) {
             return set_error(serror, SCRIPT_ERR_MUST_USE_FORKID);
         }
     }
