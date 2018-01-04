@@ -174,6 +174,10 @@ static arith_uint256 ComputeTarget(const CBlockIndex *pindexFirst,
                                    const Consensus::Params &params) {
     assert(pindexLast->nHeight > pindexFirst->nHeight);
 
+
+
+
+
     /**
      * From the total work done and the time it took to produce that much work,
      * we can deduce how much work we expect to be produced in the targeted time
@@ -250,9 +254,10 @@ uint32_t GetNextCashPlusWorkRequired(const CBlockIndex *pindexPrev,
                                  const Config &config) {
 
     const Consensus::Params &params = config.GetChainParams().GetConsensus();
-
     // This cannot handle the genesis block and early blocks in general.
     assert(pindexPrev);
+
+    bool postfork=pindexPrev->nHeight>=params.BCPHeight;
 
     // Special difficulty rule for testnet:
     // If the new block's timestamp is more than 2* 10 minutes then allow
@@ -260,7 +265,7 @@ uint32_t GetNextCashPlusWorkRequired(const CBlockIndex *pindexPrev,
     if (params.fPowAllowMinDifficultyBlocks &&
         (pblock->GetBlockTime() >
          pindexPrev->GetBlockTime() + 2 * params.nPowTargetSpacing)) {
-        return UintToArith256(params.PowLimit(true)).GetCompact();
+        return UintToArith256(params.PowLimit(postfork)).GetCompact();
     }
 
     // Compute the difficulty based on the full adjustment interval.
@@ -281,7 +286,7 @@ uint32_t GetNextCashPlusWorkRequired(const CBlockIndex *pindexPrev,
     const arith_uint256 nextTarget =
         ComputeTarget(pindexFirst, pindexLast, params);
 
-    const arith_uint256 powLimit = UintToArith256(params.PowLimit(true));
+    const arith_uint256 powLimit = UintToArith256(params.PowLimit(postfork));
     if (nextTarget > powLimit) {
         return powLimit.GetCompact();
     }
