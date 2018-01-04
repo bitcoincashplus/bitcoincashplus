@@ -123,7 +123,7 @@ std::string ScriptToAsmStr(const CScript &script,
                         // TODO: Remove after the Hard Fork.
                         flags |= SCRIPT_ENABLE_SIGHASH_FORKID;
                     }
-                    if (CheckSignatureEncoding(vch, flags, nullptr)) {
+                    if (CheckSignatureEncoding(vch, flags|SCRIPT_ALLOW_NON_FORKID, nullptr)) {
                         const uint8_t chSigHashType = vch.back();
                         if (mapSigHashTypes.count(chSigHashType)) {
                             strSigHashDecode =

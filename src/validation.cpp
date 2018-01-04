@@ -1837,12 +1837,17 @@ static uint32_t GetBlockScriptFlags(const CBlockIndex *pindex,
     // to fail (for instance in multisig or other forms of smart contracts) are
     // null.
 
-   // if (IsBCPEnabled(config, pindex->pprev)) {
+    //Enable ForkId by default
+    flags |= SCRIPT_ENABLE_SIGHASH_FORKID;
+
+    if (IsBCPEnabled(config, pindex->pprev)) {
         flags |= SCRIPT_VERIFY_STRICTENC;
-        flags |= SCRIPT_ENABLE_SIGHASH_FORKID;
         flags |= SCRIPT_VERIFY_LOW_S;
         flags |= SCRIPT_VERIFY_NULLFAIL;
-    //}
+    }
+    else {
+         flags|=SCRIPT_ALLOW_NON_FORKID;
+    }
      return flags;
 }
 
