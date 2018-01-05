@@ -3151,8 +3151,6 @@ bool ProcessMessages(const Config &config, CNode *pfrom, CConnman &connman,
 
     msg.SetVersion(pfrom->GetRecvVersion());
 
-        LogPrintf("Message Start %c  ,netMagic %c",msg.hdr.pchMessageStart[0],chainparams.NetMagic()[0]);
-
     // Scan for message start
     if (memcmp(std::begin(msg.hdr.pchMessageStart),
                std::begin(chainparams.NetMagic()),
