@@ -3507,23 +3507,7 @@ bool ContextualCheckBlock(const Config &config, const CBlock &block,
         }
     }
 
-   if (IsBCPEnabled(config,nHeight) &&
-        nHeight < consensusParams.BCPHeight + consensusParams.BCPPremineWindow &&
-        consensusParams.BCPremineEnforceWhitelist)
-    {
-        if (block.vtx[0]->vout.size() != 1) {
-            return state.DoS(
-                100, error("%s: only one coinbase output is allowed",__func__),
-                REJECT_INVALID, "bad-premine-coinbase-output");
-        }
-        const CTxOut& output = block.vtx[0]->vout[0];
-        bool valid =true;//consensusParams.IsPremineAddressScript(output.scriptPubKey, (uint32_t)nHeight);
-        if (!valid) {
-            return state.DoS(
-                100, error("%s: not in premine whitelist", __func__),
-                REJECT_INVALID, "bad-premine-coinbase-scriptpubkey");
-        }
-    }
+
 
     return true;
 }

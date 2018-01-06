@@ -72,7 +72,6 @@ struct Params {
     uint256 powLimit;
     uint256 powLimitLegacy;
     uint256 powLimitStart;
-    bool BCPremineEnforceWhitelist;
 
     bool fPowAllowMinDifficultyBlocks;
     bool fPowNoRetargeting;
