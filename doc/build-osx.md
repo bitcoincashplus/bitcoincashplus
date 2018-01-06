@@ -23,7 +23,7 @@ Dependencies
 
 Install dependencies:
 
-    brew install automake berkeley-db4 libtool boost --c++11 miniupnpc openssl pkg-config protobuf --c++11 qt5 libevent
+    brew install automake berkeley-db4 libtool boost --c++11 miniupnpc openssl pkg-config protobuf --c++11 qt5 libevent libsodium
 
 In case you want to build the disk image with `make deploy` (.dmg / optional), you need RSVG
 
@@ -34,7 +34,7 @@ Build Bitcoin Cash Plus
 
 1. Clone the Bitcoin Cash Plus source code and cd into `bitcoincashplus`
 
-        git clone github.com/bitcoincashplus/bitcoincashplus
+        git clone https://github.com/bitcoincashplus/bitcoincashplus
         cd bitcoincashplus
 
 2.  Build bitcoincashplus:
