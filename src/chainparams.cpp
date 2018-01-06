@@ -105,11 +105,10 @@ public:
         consensus.antiReplayOpReturnSunsetHeight = 530000;
         consensus.antiReplayOpReturnCommitment = GetAntiReplayCommitment();
         consensus.BCPHeight = 501407; //
-        consensus.BCPPremineWindow = 4000;
+        consensus.BCPPremineWindow = 4500;
         consensus.powLimit = uint256S("0007ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.powLimitStart = uint256S("0000000fffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.powLimitLegacy = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        consensus.BCPremineEnforceWhitelist=true;
         consensus.nPowAveragingWindow = 30;
         assert(maxUint/UintToArith256(consensus.powLimit) >= consensus.nPowAveragingWindow);
         consensus.nPowMaxAdjustDown = 32;
@@ -231,9 +230,8 @@ public:
         consensus.BIP65Height = 581885; // 00000000007f6655f22f98e72ed80d8b06dc761d5da09df0fa1dc4be4f861eb6
         consensus.BIP66Height = 330776; // 000000002104c8c45e99a8853285a3b592602a3ccde2b832481da85e9e4ba182
 
-        consensus.BCPHeight = 1310320;
+        consensus.BCPHeight = 1257620;
         consensus.BCPPremineWindow = 50;
-        consensus.BCPremineEnforceWhitelist=false;
 
         consensus.antiReplayOpReturnSunsetHeight = 1250000;
         consensus.antiReplayOpReturnCommitment = GetAntiReplayCommitment();
@@ -350,7 +348,6 @@ public:
         consensus.BCPPremineWindow = 20;
         consensus.antiReplayOpReturnSunsetHeight = 530000;
         consensus.antiReplayOpReturnCommitment = GetAntiReplayCommitment();
-        consensus.BCPremineEnforceWhitelist=false;
 
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.powLimitStart = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");

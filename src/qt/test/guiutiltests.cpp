@@ -49,8 +49,8 @@ void GUIUtilTests::toCurrentEncodingTest() {
     QVERIFY(ToCurrentEncoding("garbage", config) == "garbage");
 
     QString cashaddr_pubkey =
-        "bitcoincashplus:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a";
-    QString base58_pubkey = "1BpEi6DfDAUFd7GtittLSdBeYJvcoaVggu";
+        "bitcoincashplus:qqqprqq976hvnqkeajpc33u5rt92xw5vm5ylgfku0f";
+    QString base58_pubkey = "CGUFXy9eQgs3eunVAEqFdS9tnkEcgLw9VD";
 
     config.SetCashAddrEncoding(true);
     QVERIFY(ToCurrentEncoding(cashaddr_pubkey, config) == cashaddr_pubkey);
