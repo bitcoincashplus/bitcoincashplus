@@ -12,6 +12,5 @@ Features
 * 2-way Replay protection (SIGHASH_FORK_ID)
 * Unique wallet addresses
 ## Links
-https://t.co/g3trObTJgC
 * Website: http://bitcoincashplus.org
 * Slack: [invitation](https://slackpass.io/bitcoincashplus)
