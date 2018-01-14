@@ -2115,10 +2115,9 @@ bool AppInitMain(Config &config, boost::thread_group &threadGroup,
     if (!est_filein.IsNull()) mempool.ReadFeeEstimates(est_filein);
     fFeeEstimatesInitialized = true;
 
-    // Encoded addresses using cashaddr instead of base58
-    // Activates by default on Jan, 14
+     // do not activate default
     config.SetCashAddrEncoding(
-        GetBoolArg("-usecashaddr", GetAdjustedTime() > 1515900000));
+        GetBoolArg("-usecashaddr", false));
 
 // Step 8: load wallet
 #ifdef ENABLE_WALLET
