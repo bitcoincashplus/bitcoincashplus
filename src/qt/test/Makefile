@@ -1,5 +1,5 @@
 all:
-	$(MAKE) -C ../../ test_bitcoin_qt
+
 clean:
 	$(MAKE) -C ../../ test_bitcoin_qt_clean
 check:
