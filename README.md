@@ -7,8 +7,10 @@ UPDATES
 
 Finally  we are ready to roll . Waiting for dns updates
 
+
 * TestNet December 21,2017
 * Mainnet December 23,2018
+
 
 Mining
 
@@ -23,7 +25,6 @@ Block  Explorers
 * Testnet: http://testnet.bcpexp.org
 * Mainnet:http://bcpexp.org 
  
-
 Features
 
 * ASIC-resistant GPU-minable PoW algorithm (Equihash)
@@ -32,6 +33,5 @@ Features
 * 2-way Replay protection (SIGHASH_FORK_ID)
 * Unique wallet addresses
 ## Links
-https://t.co/g3trObTJgC
 * Website: http://bitcoincashplus.org
 * Slack: [invitation](https://slackpass.io/bitcoincashplus)

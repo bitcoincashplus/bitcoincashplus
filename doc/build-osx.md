@@ -1,4 +1,4 @@
-Mac OS X Build Instructions and Notes
+Mac OS X Build Instructions and Notes 
 ====================================
 The commands in this guide should be executed in a Terminal application.
 The built-in one is located in `/Applications/Utilities/Terminal.app`.
