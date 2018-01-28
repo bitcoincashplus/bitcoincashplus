@@ -16,8 +16,8 @@ Mining
 
 You can get mining & mining pool software from following our github repository
 * https://github.com/poolbcashplus
-* Test Mining Pool   : testnet.bcppool.net:38754
-* Mainnet Minng pool : bcppool.net:38754
+* Test Mining Pool   : testnet.bcppool.net:3857
+* Mainnet Minng pool : bcppool.net:3857
 
 
 Block  Explorers
