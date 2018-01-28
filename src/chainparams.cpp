@@ -169,7 +169,10 @@ public:
 
         vSeeds.clear();
 
+       vSeeds.push_back(CDNSSeedData("bcpfork.org", "seed.bcpfork.org", true));
+        vSeeds.push_back(CDNSSeedData("bcpseeds.net", "seed.bcpseeds.net", true));
         vSeeds.push_back(CDNSSeedData("bitcoincashplus.org", "seed.bitcoincashplus.org", true));
+
         vFixedSeeds = std::vector<SeedSpec6>(
             pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
@@ -231,7 +234,7 @@ public:
         consensus.BIP66Height = 330776; // 000000002104c8c45e99a8853285a3b592602a3ccde2b832481da85e9e4ba182
 
         consensus.BCPHeight = 1257620;
-        consensus.BCPPremineWindow = 50;
+        consensus.BCPPremineWindow = 4500;
 
         consensus.antiReplayOpReturnSunsetHeight = 1250000;
         consensus.antiReplayOpReturnCommitment = GetAntiReplayCommitment();
@@ -294,7 +297,8 @@ public:
         assert(genesis.hashMerkleRoot == uint256S("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
 
         vSeeds.clear();
-
+        vSeeds.push_back(CDNSSeedData("bcpfork.org", "test-seed.bcpfork.org", true));
+        vSeeds.push_back(CDNSSeedData("bcpseeds.net", "test-seed.bcpseeds.net", true));
         vSeeds.push_back(CDNSSeedData("bitcoincashplus.org", "test-seed.bitcoincashplus.org", true));
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
