@@ -980,7 +980,6 @@ static UniValue submitblock(const Config &config,
         }
         return "duplicate";
     }
-
     if (!sc.found) {
         return "inconclusive";
     }
