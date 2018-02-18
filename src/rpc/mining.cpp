@@ -972,7 +972,7 @@ static UniValue submitblock(const Config &config,
 
     submitblock_StateCatcher sc(block.GetHash());
     RegisterValidationInterface(&sc);
-   /* bool fAccepted = ProcessNewBlock(config, blockptr, true, nullptr);
+    bool fAccepted = ProcessNewBlock(config, blockptr, true, nullptr);
     UnregisterValidationInterface(&sc);
     if (fBlockPresent) {
         if (fAccepted && !sc.found) {
@@ -980,7 +980,6 @@ static UniValue submitblock(const Config &config,
         }
         return "duplicate";
     }
-*/
     if (!sc.found) {
         return "inconclusive";
     }
