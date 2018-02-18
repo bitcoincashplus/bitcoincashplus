@@ -2117,7 +2117,11 @@ static bool ConnectBlock(const Config &config, const CBlock &block,
                          REJECT_INVALID, "bad-cb-amount");
     }
 
-    if (!control.Wait()) {
+    /**
+    *Before fork happens from mainnet someblock validation fails even if block is valid.
+    *For instance 506396.
+    */
+    if (!control.Wait() && IsBCPEnabled(config, pindex->nHeight)) {
         return state.DoS(100, false, REJECT_INVALID, "blk-bad-inputs", false,
                          "parallel script check failed");
     }
