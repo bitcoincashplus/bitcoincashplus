@@ -1,28 +1,18 @@
 # Bitcoin Cash Plus 
 
 [![Build Status](https://travis-ci.org/bitcoincashplus/bitcoincashplus.svg?branch=master)](https://travis-ci.org/bitcoincashplus/bitcoincashplus)
-Bitcoin Cash Plus (BCP) is a hardfork of bitcoin-core that will occur at January 23, 2018. 
 
-UPDATES
-
-Finally  we are ready to roll . Waiting for dns updates
-
-
-* TestNet December 21,2017
-* Mainnet December 23,2018
+Bitcoin Cash Plus (BCP) is a hardfork of bitcoin-core that occurred at block 509696 .
 
 
 Mining
 
 You can get mining & mining pool software from following our github repository
 * https://github.com/poolbcashplus
-* Test Mining Pool   : testnet.bcppool.net:3857
 * Mainnet Minng pool : bcppool.net:3857
 
 
 Block  Explorers
-
-* Testnet: http://testnet.bcpexp.org
 * Mainnet:http://bcpexp.org 
  
 Features
