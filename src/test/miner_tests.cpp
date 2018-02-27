@@ -451,9 +451,12 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity) {
     mempool.addUnchecked(
         hash,
         entry.Fee(LOWFEE).Time(GetTime()).SpendsCoinbase(false).FromTx(tx));
-    BOOST_CHECK_THROW(
-        BlockAssembler(config, chainparams).CreateNewBlock(scriptPubKey),
-        std::runtime_error);
+    std::unique_ptr<CBlockTemplate> pblocktemplate =BlockAssembler(config, chainparams).CreateNewBlock(scriptPubKey);
+    CBlock &block = pblocktemplate->block;
+    
+    if(block.nHeight>=chainparams.GetConsensus().BCPHeight){
+         BOOST_CHECK_THROW(pblocktemplate, std::runtime_error);
+    }
     mempool.clear();
 
     // Double spend txn pair in mempool, template creation fails.
